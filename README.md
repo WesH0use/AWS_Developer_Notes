@@ -1,9 +1,7 @@
 # AWS_Developer_Notes
 
-<b>Knowledge Areas</b>
-
+<b>Knowledge Areas</b><br>
 <b>Development with AWS Services</b>
-
 <b>Monitoring & Troubleshooting</b>
 
 <b>Deployment</b>
