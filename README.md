@@ -2,7 +2,7 @@
 
 ## Knowledge Areas
 
-<b>Development with AWS Services</b><br>
+<b>[Development with AWS Services](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Development.md)</b><br>
 <b>Monitoring & Troubleshooting</b><br>
 <b>Deployment</b><br>
 <b>Security</b><br>
