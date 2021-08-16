@@ -24,3 +24,8 @@ You can use X-Ray to collect data across AWS Accounts. The X-Ray agent can assum
 The AWS Cloud Development Kit (AWS CDK) is an open-source software development framework to define your cloud application resources using familiar programming languages.
 
 Provisioning cloud applications can be a challenging process that requires you to perform manual actions, write custom scripts, maintain templates, or learn domain-specific languages. AWS CDK uses the familiarity and expressive power of programming languages such as JavaScript/TypeScript, Python, Java, and .NET for modeling your applications. It provides you with high-level components called constructs that preconfigure cloud resources with proven defaults, so you can build cloud applications without needing to be an expert. **AWS CDK provisions your resources in a safe, repeatable manner through AWS CloudFormation.** It also enables you to compose and share your own custom constructs that incorporate your organization's requirements, helping you start new projects faster.
+
+# Billing and Cost Management 
+
+You need to activate IAM user access to the Billing and Cost Management console for all the users who need access - **By default, IAM users do not have access to the AWS Billing and Cost Management console. You or your account administrator must grant users access**. You can do this by activating IAM user access to the Billing and Cost Management console and attaching an IAM policy to your users. Then, you need to activate IAM user access for IAM policies to take effect. You only need to activate IAM user access once.
+
