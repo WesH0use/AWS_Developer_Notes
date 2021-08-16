@@ -6,6 +6,6 @@
 <b>[Monitoring & Troubleshooting](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Monitoring_Troubleshooting.md)</b><br>
 <b>[Deployment](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Deployment.md)</b><br>
 <b>[Security](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Security.md)</b><br>
-<b>Refactoring</b><br>
-<b>ECS</b><br>
+<b>[Refactoring](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Refactoring.md)</b><br>
+<b>[ECS](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/ECS.md)</b><br>
 
