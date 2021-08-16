@@ -19,3 +19,8 @@ AWS X-Ray helps developers analyze and debug production, distributed application
 
 You can use X-Ray to collect data across AWS Accounts. The X-Ray agent can assume a role to publish data into an account different from the one in which it is running. This enables you to publish data from various components of your application into a central account.
 
+## AWS Cloud Development Kit (CDK)
+
+The AWS Cloud Development Kit (AWS CDK) is an open-source software development framework to define your cloud application resources using familiar programming languages.
+
+Provisioning cloud applications can be a challenging process that requires you to perform manual actions, write custom scripts, maintain templates, or learn domain-specific languages. AWS CDK uses the familiarity and expressive power of programming languages such as JavaScript/TypeScript, Python, Java, and .NET for modeling your applications. It provides you with high-level components called constructs that preconfigure cloud resources with proven defaults, so you can build cloud applications without needing to be an expert. **AWS CDK provisions your resources in a safe, repeatable manner through AWS CloudFormation.** It also enables you to compose and share your own custom constructs that incorporate your organization's requirements, helping you start new projects faster.
