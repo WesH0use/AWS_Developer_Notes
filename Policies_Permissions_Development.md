@@ -36,7 +36,17 @@ S3 buckets support bucket policies which can be used to give anonymous access to
 
 The * Principal means “everybody” that includes non-users.
 
-Similarly, the role’s trust policy is a resource-based policy. This allows services and identities to assume the role. For example, a cross-account access role can use this trust policy to allow access from a different account:
+Similarly, the role’s trust policy is a resource-based policy. This allows services and identities to assume the role. 
+
+You manage access in AWS by creating policies and attaching them to IAM identities (users, groups of users, or roles) or AWS resources. **A policy is an object in AWS that, when associated with an identity or resource, defines their permissions.** Resource-based policies are JSON policy documents that you attach to a resource such as an Amazon S3 bucket. These policies grant the specified principal permission to perform specific actions on that resource and define under what conditions this applies.
+ 
+**Trust policy** - Trust policies define which principal entities (accounts, users, roles, and federated users) can assume the role. An IAM role is both an identity and a resource that supports resource-based policies. For this reason, you must attach both a trust policy and an identity-based policy to an IAM role. **The IAM service supports only one type of resource-based policy called a role trust policy, which is attached to an IAM role.**
+ 
+**AWS Organizations Service Control Policies (SCP)** - If you enable all features of AWS organization, then you can apply service control policies (SCPs) to any or all of your accounts. SCPs are JSON policies that specify the maximum permissions for an organization or organizational unit (OU). The SCP limits permissions for entities in member accounts, including each AWS account root user. An explicit deny in any of these policies overrides the allow.
+
+**Access control list (ACL)** - Access control lists (ACLs) are service policies that allow you to control which principals in another account can access a resource. ACLs cannot be used to control access for a principal within the same account. Amazon S3, AWS WAF, and Amazon VPC are examples of services that support ACLs.
+
+**Permissions boundary** - AWS supports permissions boundaries for IAM entities (users or roles). **A permissions boundary is an advanced feature for using a managed policy to set the maximum permissions that an identity-based policy can grant to an IAM entity.** An entity's permissions boundary allows it to perform only the actions that are allowed by both its identity-based policies and its permissions boundaries.
 
 ## Practice Questions
 
