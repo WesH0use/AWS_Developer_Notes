@@ -10,7 +10,7 @@
 
 ## [Data Volumes](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Data_Volumes_Development.md)
 
-## [CNAME Record](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Resource_Record_Sets_Development.md)s
+## [CNAME Records](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Resource_Record_Sets_Development.md)
 
 
 ## SQS 
