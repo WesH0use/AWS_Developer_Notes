@@ -96,6 +96,21 @@ CNAME records can be used to map one domain name to another. Although you should
 Create an Alias Record - Alias records let you route traffic to selected AWS resources, such as CloudFront distributions and Amazon S3 buckets. They also let you route traffic from one record in a hosted zone to another record. 3rd party websites do not qualify for these as we have no control over those. 'Alias record' cannot be used to map one domain name to another.
 
 ## SQS 
+ 
+### DeleteQueue API Call
+Deletes the queue specified by the QueueUrl, regardless of the queue's contents. When you delete a queue, any messages in the queue are no longer available.
+
+When you delete a queue, the deletion process takes up to 60 seconds. Requests you send involving that queue during the 60 seconds might succeed. For example, a SendMessage request might succeed, but after 60 seconds the queue and the message you sent no longer exist.
+
+When you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.
+ 
+### PurgeQueue API Call
+ 
+Deletes the messages in a queue specified by the QueueURL parameter. When you use the PurgeQueue action, you can't retrieve any messages deleted from a queue. The queue however remains.
+
+ ### RemovePermission 
+ 
+ Revokes any permissions in the queue policy that matches the specified Label parameter.
 
 ### CreateQueue API Call
 **You can't change the queue type after you create it**- You can't change the queue type after you create it and you can't convert an existing standard queue into a FIFO queue. You must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue.
