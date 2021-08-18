@@ -2,19 +2,13 @@
 
 ### Instance Purchasing Options
 
-**On-Demand Instances** – Pay, by the second, for the instances that you launch.
+**Dedicated Instances** - Dedicated Instances are Amazon EC2 instances that run in a virtual private cloud (VPC) on hardware that's dedicated to a single customer. Dedicated Instances that belong to different AWS accounts are physically isolated at a hardware level, even if those accounts are linked to a single-payer account. However, Dedicated Instances may share hardware with other instances from the same AWS account that are not Dedicated Instances. A Dedicated Host is also a physical server that's dedicated for your use. With a Dedicated Host, you have visibility and control over how instances are placed on the server.
 
-**Reserved Instances** – Reserved Instances offer significant savings on Amazon EC2 costs compared to On-Demand Instance pricing. A Reserved Instance can be purchased for a one-year or three-year commitment, with the three-year commitment offering a bigger discount. Reserved instances come with two offering classes - Standard or Convertible.
+**Spot Instances** - A Spot Instance is an unused EC2 instance that is available for less than the On-Demand price. Your Spot Instance runs whenever capacity is available and the maximum price per hour for your request exceeds the Spot price. Any instance present with unused capacity will be allocated. Even though this is cost-effective, it does not fulfill the single-tenant hardware requirement of the client and hence is not the correct option.
 
-**Convertible Reserved instances** - A Convertible Reserved Instance can be exchanged during the term for another Convertible Reserved Instance with new attributes including instance family, instance type, platform, scope, or tenancy. 
+**Dedicated Hosts** - An Amazon EC2 Dedicated Host is a physical server with EC2 instance capacity fully dedicated to your use. Dedicated Hosts allow you to use your existing software licenses on EC2 instances. With a Dedicated Host, you have visibility and control over how instances are placed on the server. This option is costlier than the Dedicated Instance.
 
-**Spot Instances** – Request unused EC2 instances, which can reduce your Amazon EC2 costs significantly.
-
-**Dedicated Hosts** – Pay for a physical host that is fully dedicated to running your instances, and bring your existing per-socket, per-core, or per-VM software licenses to reduce costs.
-
-**Dedicated Instances** – Pay, by the hour, for instances that run on single-tenant hardware.
-
-**Scheduled Reserved instances** - Scheduled Reserved Instances (Scheduled Instances) enable you to purchase capacity reservations that recur on a daily, weekly, or monthly basis, with a specified start time and duration, for a one-year term. You reserve the capacity in advance so that you know it is available when you need it.
+**On-Demand Instances** - With On-Demand Instances, you pay for compute capacity by the second with no long-term commitments. You have full control over its lifecycle—you decide when to launch, stop, hibernate, start, reboot, or terminate it. Hardware isolation is not possible and on-demand has one of the costliest instance charges.
 
 ### EC2 Auto Scaling 
 
