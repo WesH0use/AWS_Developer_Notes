@@ -26,4 +26,4 @@
 
 ## [Codebuild](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Codebuild.md)
 
-
+## [DynamoDB](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/dynamo_db.md)
