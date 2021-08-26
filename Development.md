@@ -22,4 +22,6 @@
 
 ## [CloudFormation](https://github.com/WesH0use/AWS_Developer_Notes/new/main)
 
+## [Cognito (User vs Identity Pools)](https://github.com/WesH0use/AWS_Developer_Notes/blob/main/Cognito_.md)
+
 
