@@ -45,3 +45,15 @@ Reserved Instances offer significant savings on Amazon EC2 costs compared to On-
 
 **For Auto Scaling groups in a VPC, the EC2 instances are launched in subnets - For Auto Scaling groups in a VPC, the EC2 instances are launched in subnets. Customers can select the subnets for your EC2 instances when you create or update the Auto Scaling group.**
 
+## A media publishing company is using Amazon EC2 instances for running their business-critical applications. Their IT team is looking at reserving capacity apart from savings plans for the critical instances. As a Developer Associate, which of the following reserved instance types you would select to provide capacity reservations?
+
+When you purchase a Reserved Instance for a specific Availability Zone, it's referred to as a **Zonal Reserved Instance**. **Zonal Reserved Instances provide *capacity reservations* as well as discounts.**
+
+**Zonal Reserved Instances** - A zonal Reserved Instance provides a capacity reservation in the specified Availability Zone. Capacity Reservations enable you to reserve capacity for your Amazon EC2 instances in a specific Availability Zone for any duration. This gives you the ability to create and manage Capacity Reservations independently from the billing discounts offered by Savings Plans or regional Reserved Instances.
+
+Regional vs Zonal Reserved Instances:
+
+**A zonal Reserved Instance reserves capacity in the specified Availability Zone. A regional on does not.** 
+
+
+
