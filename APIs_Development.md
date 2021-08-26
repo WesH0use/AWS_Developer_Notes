@@ -12,3 +12,9 @@ You can configure usage plans and API keys to allow customers to access selected
 # Practice Questions
 
 # A SaaS company runs a HealthCare web application that is used worldwide by users. There have been requests by mobile developers to expose public APIs for the application-specific functionality. You decide to make the APIs available to mobile developers as product offerings. Which of the following options will allow you to do that?
+
+# As a Senior Developer, you are tasked with creating several API Gateway powered APIs along with your team of developers. The developers are working on the API in the development environment, but they find the changes made to the APIs are not reflected when the API is called. As a Developer Associate, which of the following solutions would you recommend for this use-case?
+
+**Redeploy the API to an existing stage or to a new stage**
+
+After creating your API, you must deploy it to make it callable by your users. **To deploy an API, you create an API deployment and associate it with a stage. A stage is a logical reference to a lifecycle state of your API (for example, dev, prod, beta, v2)**. API stages are identified by the API ID and stage name. **Every time you update an API, you must redeploy the API to an existing stage or to a new stage**. **Updating an API includes modifying routes, methods, integrations, authorizers, and anything else other than stage settings**.
