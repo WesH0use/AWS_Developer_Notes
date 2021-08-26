@@ -32,3 +32,9 @@ When you request a strongly consistent read, DynamoDB returns a response with th
 
 DynamoDB uses **eventually consistent reads by default**. **Read operations (such as GetItem, Query, and Scan) provide a ConsistentRead parameter. If you set this parameter to true, DynamoDB uses strongly consistent reads during the operation**. **As per the given use-case, to make sure that only the last updated value of any item is used in the application, you should use strongly consistent reads by setting ConsistentRead = true for GetItem operation.**
 
+## A startup has been experimenting with DynamoDB in its new test environment. The development team has discovered that some of the write operations have been overwriting existing items that have the specified primary key. This has messed up their data, leading to data discrepancies. Which DynamoDB write option should be selected to prevent this kind of overwriting?
+
+**Conditional writes** - DynamoDB optionally supports conditional writes for write operations (PutItem, UpdateItem, DeleteItem). A conditional write succeeds **only if the item attributes meet one or more expected conditions**. **Otherwise, it returns an error**.
+
+**For example, you might want a PutItem operation to succeed only if there is not already an item with the same primary key.** Or you could prevent an UpdateItem operation from modifying an item if one of its attributes has a certain value. Conditional writes are helpful in cases where multiple users attempt to modify the same item. This is the right choice for the current scenario.
+
