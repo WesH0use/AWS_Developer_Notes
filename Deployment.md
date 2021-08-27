@@ -139,9 +139,29 @@ A build in a queue that does not start after the number of minutes specified in 
 
 By setting the timeout configuration, the build process will automatically terminate post the expiry of the configured timeout.
 
-## AWS Serverless Application Model (SAM)
+## Advanced environment customization with configuration files (.ebextensions)
 
-The AWS Serverless Application Model (SAM) is an open-source framework for building serverless applications. It provides shorthand syntax to express functions, APIs, databases, and event source mappings. With just a few lines per resource, you can define the application you want and model it using YAML.
+You can add AWS Elastic Beanstalk configuration files (.ebextensions) to your web application's source code to configure your environment and customize the AWS resources that it contains. Configuration files are YAML- or JSON-formatted documents with a .config file extension that you place in a folder named .ebextensions and deploy in your application source bundle.
+
+The option_settings section of a configuration file defines values for configuration options. Configuration options let you configure your Elastic Beanstalk environment, the AWS resources in it, and the software that runs your application. Configuration files are only one of several ways to set configuration options.
+
+# CodeDeploy
+
+**A developer needs to automate software package deployment to both Amazon EC2 instances and virtual servers running on-premises, as part of continuous integration and delivery that the business has adopted. Which AWS service should he use to accomplish this task?**
+
+**Continuous integration** is a DevOps software development practice where developers regularly merge their code changes into a central repository, after which automated builds and tests are run.
+
+Continuous delivery is a software development practice where code changes are automatically prepared for a release to production. A pillar of modern application development, continuous delivery expands upon continuous integration by deploying all code changes to a testing environment and/or a production environment after the build stage.
+
+**AWS CodeDeploy** - AWS CodeDeploy is a fully managed "deployment" service that automates software deployments to a variety of compute services such as Amazon EC2, AWS Fargate, AWS Lambda, and your on-premises servers. AWS CodeDeploy **makes it easier for you to rapidly release new features, helps you avoid downtime during application deployment, and handles the complexity of updating your applications**. This is the right choice for the current use case.
+
+## Serverless Application Model (SAM)
+
+The AWS Serverless Application Model (AWS SAM) is an open-source framework that you can use to build serverless applications on AWS.
+
+A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. Note that a serverless application is more than just a Lambda function—it can include additional resources such as APIs, databases, and event source mappings.
+
+Serverless Application Model (SAM) Templates include several major sections. **Transform and Resources** are the only required sections.
 
 SAM supports the following resource types:
 
@@ -158,3 +178,27 @@ SAM supports the following resource types:
 **AWS::Serverless::SimpleTable**
 
 **AWS::Serverless::StateMachine**
+
+## The development team at an e-commerce company completed the last deployment for their application at a reduced capacity because of the deployment policy. The application took a performance hit because of the traffic spike due to an on-going sale.Which of the following represents the BEST deployment option for the upcoming application version such that it maintains at least the FULL capacity of the application and MINIMAL impact of failed deployment?
+
+With Elastic Beanstalk, you can quickly deploy and manage applications in the AWS Cloud without having to learn about the infrastructure that runs those applications. Elastic Beanstalk reduces management complexity without restricting choice or control. You simply upload your application, and Elastic Beanstalk automatically handles the details of capacity provisioning, load balancing, scaling, and application health monitoring.
+
+![image](https://user-images.githubusercontent.com/44325167/131115116-8f39a31c-49a2-4a79-8e82-384e7f1685d1.png)
+
+The **'Immutable'** deployment policy ensures that your new application version is always deployed to new instances, instead of updating existing instances. It also has the additional advantage of a quick and safe rollback in case the deployment fails. In an immutable update, a second Auto Scaling group is launched in your environment and the new version serves traffic alongside the old version until the new instances pass health checks. In case of deployment failure, the new instances are terminated, so the impact is minimal.
+
+
+## ECS 
+
+**Your company has embraced cloud-native microservices architectures. New applications must be dockerized and stored in a registry service offered by AWS. The architecture should support dynamic port mapping and support multiple tasks from a single service on the same container instance. All services should run on the same EC2 instance.Which of the following options offers the best-fit solution for the given use-case?**
+
+**Amazon Elastic Container Service (Amazon ECS)** is a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster. You can host your cluster on a serverless infrastructure that is managed by Amazon ECS by launching your services or tasks using the Fargate launch type. For more control over your infrastructure, you can host your tasks on a cluster of Amazon Elastic Compute Cloud (Amazon EC2) instances that you manage by using the EC2 launch type.
+
+**An Application load balancer** distributes incoming application traffic across multiple targets, such as EC2 instances, in multiple Availability Zones. A listener checks for connection requests from clients, using the protocol and port that you configure. The rules that you define for a listener determine how the load balancer routes requests to its registered targets. Each rule consists of a priority, one or more actions, and one or more conditions.
+
+![image](https://user-images.githubusercontent.com/44325167/131115461-d1c7e0ba-797b-4d58-95c5-4924df902d09.png)
+
+When you deploy your services using Amazon Elastic Container Service (Amazon ECS), you can use dynamic port mapping to support multiple tasks from a single service on the same container instance. Amazon ECS manages updates to your services by automatically registering and deregistering containers with your target group using the instance ID and port for each container.
+
+![image](https://user-images.githubusercontent.com/44325167/131115983-9f821992-f535-4cb5-a5b3-557148a6c368.png)
+
