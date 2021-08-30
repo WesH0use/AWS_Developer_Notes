@@ -60,3 +60,15 @@ Regional vs Zonal Reserved Instances:
 **Amazon Elastic Container Service (Amazon ECS) on Fargate** - Amazon Elastic Container Service (Amazon ECS) is a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster. You can host your cluster on a serverless infrastructure that is managed by Amazon ECS by launching your services or tasks using the Fargate launch type.
 
 **AWS Fargate is a serverless compute engine for containers that works with both Amazon Elastic Container Service (ECS) and Amazon Elastic Kubernetes Service (EKS).** Fargate makes it easy for you to focus on building your applications. Fargate removes the need to provision and manage servers, lets you specify and pay for resources per application, and improves security through application isolation by design.
+
+## Step Functions
+
+### A team is checking the viability of using AWS Step Functions for creating a banking workflow for loan approvals. The web application will also have human approval as one of the steps in the workflow.As a developer associate, which of the following would you identify as the key characteristics for AWS Step Function? (Select two)
+
+**Standard Workflows on AWS Step Functions are suitable for long-running, durable, and auditable workflows that can also support any human approval steps**, - Standard Workflows on AWS Step Functions are more suitable for long-running, durable, and auditable workflows _where repeating workflow steps is expensive (e.g., restarting a long-running media transcode) or harmful (e.g., charging a credit card twice)_. Example workloads include training and deploying machine learning models, report generation, billing, credit card processing, and ordering and fulfillment processes. Step functions also **support any human approval steps**.
+
+**You should use Express Workflows for workloads with high event rates and short duration** - You should use Express Workflows for workloads with high event rates and short durations. **Express Workflows support event rates of more than 100,000 per second**.
+
+
+
+
