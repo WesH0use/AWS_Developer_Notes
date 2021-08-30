@@ -95,4 +95,38 @@ When building production workloads, you should consider using a configuration wi
 
 **Use the header X-Forwarded-For** - The X-Forwarded-For request header helps you identify the IP address of a client when you use an HTTP or HTTPS load balancer. Because load balancers intercept traffic between clients and servers, your server access logs contain only the IP address of the load balancer. To see the IP address of the client, use the X-Forwarded-For request header. Elastic Load Balancing stores the IP address of the client in the X-Forwarded-For request header and passes the header to your server.
 
+## You have migrated an on-premise SQL Server database to an Amazon Relational Database Service (RDS) database attached to a VPC inside a private subnet. Also, the related Java application, hosted on-premise, has been moved to an Amazon Lambda function. Which of the following should you implement to connect AWS Lambda function to its RDS instance?
 
+**Configure Lambda to connect to VPC with private subnet and Security Group needed to access RDS** - You can configure a Lambda function to connect to private subnets in a virtual private cloud (VPC) in your account. Use Amazon Virtual Private Cloud (Amazon VPC) to create a private network for resources such as databases, cache instances, or internal services. Connect your lambda function to the VPC to access private resources during execution. When you connect a function to a VPC, Lambda creates an elastic network interface for each combination of the security group and subnet in your function's VPC configuration. **This is the right way of giving RDS access to Lambda**.
+
+## You are a developer working with the AWS CLI to create Lambda functions that contain environment variables. Your functions will require over 50 environment variables consisting of sensitive information of database table names What is the total set size/number of environment variables you can create for AWS Lambda?
+
+**The total size of all _environment variables shouldn't exceed 4 KB_. There is no limit on the number of variables.** An environment variable is a pair of strings that are stored in a function's version-specific configuration. The Lambda runtime makes environment variables available to your code and sets additional environment variables that contain information about the function and invocation request. The total size of all environment variables doesn't exceed 4 KB. There is no limit defined on the number of variables that can be used.
+
+## A cybersecurity company is running a serverless backend with several compute-heavy workflows running on Lambda functions. The development team has noticed a performance lag after analyzing the performance metrics for the Lambda functions. As a Developer Associate, which of the following options would you suggest as the BEST solution to address the compute-heavy workloads?
+
+**Increase the amount of memory available to the Lambda functions**
+
+AWS Lambda lets you run code without provisioning or managing servers. You pay only for the compute time you consume.
+
+_In the AWS Lambda resource model, you choose the amount of memory you want for your function which allocates proportional CPU power and other resources_. This means you will have access to more compute power when you choose one of the new larger settings. You can set your memory in 64MB increments from 128MB to 3008MB. You access these settings when you create a function or update its configuration. The settings are available using the AWS Management Console, AWS CLI, or SDKs.
+
+## The development team at a company wants to encrypt a 111 GB object using AWS KMS. Which of the following represents the best solution?
+
+**Make a _GenerateDataKey_ API call that returns a plaintext key and an encrypted copy of a data key.** Use a plaintext key to encrypt the data - **GenerateDataKey API, generates a unique symmetric data key for client-side encryption**. This operation returns a plaintext copy of the data key and a copy that is encrypted under a customer master key (CMK) that you specify. You can use the plaintext key to encrypt your data outside of AWS KMS and store the encrypted data key with the encrypted data.
+
+GenerateDataKey returns a unique data key for each request. The bytes in the plaintext key are not related to the caller or the CMK.
+
+To encrypt data outside of AWS KMS:
+
+Use the GenerateDataKey operation to get a data key.
+
+Use the plaintext data key (in the Plaintext field of the response) to encrypt your data outside of AWS KMS. Then erase the plaintext data key from memory.
+
+Store the encrypted data key (in the CiphertextBlob field of the response) with the encrypted data.
+
+To decrypt data outside of AWS KMS:
+
+Use the Decrypt operation to decrypt the encrypted data key. The operation returns a plaintext copy of the data key.
+
+Use the plaintext data key to decrypt data outside of AWS KMS, then erase the plaintext data key from memory.
