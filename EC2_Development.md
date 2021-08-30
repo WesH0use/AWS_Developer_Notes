@@ -55,5 +55,8 @@ Regional vs Zonal Reserved Instances:
 
 **A zonal Reserved Instance reserves capacity in the specified Availability Zone. A regional on does not.** 
 
+## Your company is planning to move away from reserving EC2 instances and would like to adopt a more agile form of serverless architecture. Which of the folloiwng is the simplest and the least effort way of deploying the Docker containers on this serverless architecture?
 
+**Amazon Elastic Container Service (Amazon ECS) on Fargate** - Amazon Elastic Container Service (Amazon ECS) is a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster. You can host your cluster on a serverless infrastructure that is managed by Amazon ECS by launching your services or tasks using the Fargate launch type.
 
+**AWS Fargate is a serverless compute engine for containers that works with both Amazon Elastic Container Service (ECS) and Amazon Elastic Kubernetes Service (EKS).** Fargate makes it easy for you to focus on building your applications. Fargate removes the need to provision and manage servers, lets you specify and pay for resources per application, and improves security through application isolation by design.
