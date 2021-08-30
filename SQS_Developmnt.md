@@ -57,3 +57,9 @@ The dead-letter queue of a FIFO queue must also be a FIFO queue. Whereas, the de
 The length of time, in seconds, for which the delivery of all messages in the queue is delayed is configured using MessageRetentionPeriod attribute - The length of time, in seconds, for which the delivery of all messages in the queue is delayed is configured using DelaySeconds attribute. MessageRetentionPeriod attribute controls the length of time, in seconds, for which Amazon SQS retains a message.
 
 Queue tags are case insensitive. A new tag with a key identical to that of an existing tag overwrites the existing tag - Queue tags are case-sensitive. A new tag with a key identical to that of an existing tag overwrites the existing tag. To be able to tag a queue on creation, you must have the sqs:CreateQueue and sqs:TagQueue permissions.
+
+## A new member of your team is working on creating Dead Letter Queue (DLQ) for AWS Lambda functions. As a Developer Associate, can you help him identify the use cases, wherein AWS Lambda will add a message into a DLQ after being processed?
+
+**The Lambda function invocation is asynchronous** - When an asynchronous invocation event exceeds the maximum age or fails all retry attempts, Lambda discards it. Or sends it to dead-letter queue if you have configured one.
+
+**The event fails all processing attempt** - A dead-letter queue acts the same as an on-failure destination in that it is used when an event fails all processing attempts or expires without being processed.
