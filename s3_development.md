@@ -18,5 +18,13 @@ If you're uploading over a spotty network, use multipart uploading to increase r
 
 You need to use multi-part upload for large files: In general, when your object size reaches 100 MB, you should consider using multipart uploads instead of uploading the object in a single operation.
 
+## As part of their on-boarding, the employees at an IT company need to upload their profile photos in a private S3 bucket. The company wants to build an in-house web application hosted on an EC2 instance that should display the profile photos in a secure way when the employees mark their attendance. As a Developer Associate, which of the following solutions would you suggest to address this use-case?
+
+**"Save the S3 key for each user's profile photo in a DynamoDB table and use a lambda function to dynamically generate a pre-signed URL. Reference this URL for display via the web application"**
+
+**On Amazon S3, all objects by default are private**. Only the object owner has permission to access these objects. **However, the object owner can optionally share objects with others by creating a pre-signed URL, using their own security credentials, to grant time-limited permission to download the objects.**
+
+You can also use an IAM instance profile to create a pre-signed URL. When you create a pre-signed URL for your object, you must provide your security credentials, specify a bucket name, an object key, specify the HTTP method (GET to download the object), and expiration date and time. The pre-signed URLs are valid only for the specified duration. So for the given use-case, the object key can be retrieved from the DynamoDB table, and then the application can generate the pre-signed URL using the IAM instance profile.
+
 
 
