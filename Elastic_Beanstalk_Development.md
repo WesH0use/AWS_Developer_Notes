@@ -14,3 +14,16 @@ When creating configuration files for AWS Elastic Beanstalk which naming convent
 ## Practice Questions 
   
 # You have chosen AWS Elastic Beanstalk to upload your application code and allow it to handle details such as provisioning resources and monitoring. When creating configuration files for AWS Elastic Beanstalk which naming convention should you follow?
+  
+  
+# The development team at a social media company is considering using Amazon ElastiCache to boost the performance of their existing databases. As a Developer Associate, which of the following use-cases would you recommend as the BEST fit for ElastiCache? 
+  
+**Use ElastiCache to improve latency and throughput for read-heavy application workloads**
+  
+**Use ElastiCache to improve performance of compute-intensive workloads**
+
+Amazon ElastiCache allows you to run in-memory data stores in the AWS cloud. Amazon ElastiCache is a popular choice for real-time use cases like Caching, Session Stores, Gaming, Geospatial Services, Real-Time Analytics, and Queuing.
+
+Amazon ElastiCache can be used to significantly improve latency and throughput for many read-heavy application workloads (such as social networking, gaming, media sharing, and Q&A portals) or compute-intensive workloads (such as a recommendation engine) by allowing you to store the objects that are often read in the cache.
+  
+![image](https://user-images.githubusercontent.com/44325167/131362722-38decc12-89dc-4800-8a05-59c39d94e516.png)
