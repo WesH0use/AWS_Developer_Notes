@@ -18,3 +18,20 @@ You can configure usage plans and API keys to allow customers to access selected
 **Redeploy the API to an existing stage or to a new stage**
 
 After creating your API, you must deploy it to make it callable by your users. **To deploy an API, you create an API deployment and associate it with a stage. A stage is a logical reference to a lifecycle state of your API (for example, dev, prod, beta, v2)**. API stages are identified by the API ID and stage name. **Every time you update an API, you must redeploy the API to an existing stage or to a new stage**. **Updating an API includes modifying routes, methods, integrations, authorizers, and anything else other than stage settings**.
+
+**A development team has created a new IAM user that has s3:putObject permission to write to an S3 bucket. This S3 bucket uses server-side encryption with AWS KMS managed keys (SSE-KMS) as the default encryption. Using the access key ID and the secret access key of the IAM user, the application received an access denied error when calling the PutObject API. As a Developer Associate, how would you resolve this issue?**
+
+_Correct the policy of the IAM user to allow the kms:GenerateDataKey action_
+
+You can protect data at rest in Amazon S3 by using three different modes of server-side encryption: 
+SSE-S3 <br>
+SSE-C <br>
+SSE-KMS <br>
+
+**SSE-KMS requires that AWS manage the data key but you manage the customer master key (CMK) in AWS KMS.**
+
+The error message indicates that your IAM user or role needs permission for the kms:GenerateDataKey action. This permission is required for buckets that use default encryption with a custom AWS KMS key.
+
+In the JSON policy documents, look for policies related to AWS KMS access. Review statements with "Effect": "Allow" to check if the user or role has permissions for the kms:GenerateDataKey action on the bucket's AWS KMS key. If this permission is missing, then add the permission to the appropriate policy.
+
+In the JSON policy documents, look for statements with "Effect": "Deny". Then, confirm that those statements don't deny the s3:PutObject action on the bucket. The statements must also not deny the IAM user or role access to the kms:GenerateDataKey action on the key used to encrypt the bucket. Additionally, make sure the necessary KMS and S3 permissions are not restricted using a VPC endpoint policy, service control policy, permissions boundary, or session policy.
