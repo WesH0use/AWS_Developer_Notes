@@ -69,6 +69,10 @@ Regional vs Zonal Reserved Instances:
 
 **You should use Express Workflows for workloads with high event rates and short duration** - You should use Express Workflows for workloads with high event rates and short durations. **Express Workflows support event rates of more than 100,000 per second**.
 
+## You have been asked by your Team Lead to enable detailed monitoring of the Amazon EC2 instances your team uses. As a Developer working on AWS CLI, which of the below command will you run?
+
+_**aws ec2 monitor-instances --instance-ids i-1234567890abcdef0**_- This enables detailed monitoring for a running instance.
+
 
 
 
