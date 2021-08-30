@@ -26,5 +26,10 @@ You need to use multi-part upload for large files: In general, when your object 
 
 You can also use an IAM instance profile to create a pre-signed URL. When you create a pre-signed URL for your object, you must provide your security credentials, specify a bucket name, an object key, specify the HTTP method (GET to download the object), and expiration date and time. The pre-signed URLs are valid only for the specified duration. So for the given use-case, the object key can be retrieved from the DynamoDB table, and then the application can generate the pre-signed URL using the IAM instance profile.
 
+### To meet compliance guidelines, a company needs to ensure replication of any data stored in its S3 buckets. Which of the following characteristics are correct while configuring an S3 bucket for replication? (Select two)
+
+**Same-Region Replication (SRR) and Cross-Region Replication (CRR) can be configured at the S3 bucket level, a shared prefix level, or an object level using S3 object tags** - Amazon S3 Replication (CRR and SRR) is configured at the S3 bucket level, a shared prefix level, or an object level using S3 object tags. You add a replication configuration on your source bucket by specifying a destination bucket in the same or different AWS region for replication.
+
+**S3 lifecycle actions are NOT replicated with S3 replication** - With S3 Replication (CRR and SRR), you can establish replication rules to make copies of your objects into another storage class, in the same or a different region. Lifecycle actions are not replicated, and if you want the same lifecycle configuration applied to both source and destination buckets, enable the same lifecycle configuration on both.
 
 
