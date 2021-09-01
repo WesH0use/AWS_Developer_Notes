@@ -1,5 +1,115 @@
 # Security with AWS
 
+# Lambda
+
+### An e-commerce company has an order processing workflow with several tasks to be done in parallel as well as decision steps to be evaluated for successful processing of the order. All the tasks are implemented via Lambda functions. Which of the following is the BEST solution to meet these business requirements?
+
+**AWS Step Functions** is a web service that enables you to coordinate the components of distributed applications and microservices using visual workflows. You build applications from individual components that each perform a discrete function, or task, allowing you to scale and change applications quickly.
+
+How Step Functions Work:
+
+![image](https://user-images.githubusercontent.com/44325167/131663903-5a870df4-87ea-444d-ab98-e7f80033f0fe.png)
+
+
+The following are key features of AWS Step Functions:
+
+Step Functions are based on the concepts of tasks and state machines. You define state machines using the JSON-based Amazon States Language. A state machine is defined by the states it contains and the relationships between them. States are elements in your state machine. Individual states can make decisions based on their input, perform actions, and pass output to other states. In this way, a state machine can orchestrate workflows.
+
+Please see this note for a simple example of a State Machine:
+
+![image](https://user-images.githubusercontent.com/44325167/131664116-8ba5bdbe-b86f-47c6-9ed4-09f1524acab2.png)
+
+# SQS 
+
+### A high-frequency stock trading firm is migrating their messaging queues from self-managed message-oriented middleware systems to Amazon SQS. The development team at the company wants to minimize the costs of using SQS. As a Developer Associate, which of the following options would you recommend to address the given use-case?
+
+**Use SQS long polling to retrieve messages from your Amazon SQS queues**
+
+Amazon Simple Queue Service (SQS) is a fully managed message queuing service that enables you to decouple and scale microservices, distributed systems, and serverless applications.
+
+_Amazon SQS provides short polling and long polling to receive messages from a queue_. **By default, queues use short polling**. **With short polling, Amazon SQS sends the response right away, even if the query found no messages. With long polling, Amazon SQS sends a response after it collects at least one available message, up to the maximum number of messages specified in the request. Amazon SQS sends an empty response only if the polling wait time expires.**
+
+_Long polling makes it inexpensive to retrieve messages from your Amazon SQS queue as soon as the messages are available_. Long polling helps reduce the cost of using Amazon SQS by eliminating the number of empty responses (when there are no messages available for a ReceiveMessage request) and false empty responses (when messages are available but aren't included in a response). When the wait time for the ReceiveMessage API action is greater than 0, long polling is in effect. The maximum long polling wait time is 20 seconds.
+
+
+# Users
+### A HealthCare mobile app uses proprietary Machine Learning algorithms to provide early diagnosis using patient health metrics. To protect this sensitive data, the development team wants to transition to a scalable user management system with log-in/sign-up functionality that also supports Multi-Factor Authentication (MFA) Which of the following options can be used to implement a solution with the LEAST amount of development effort? (Select two)
+
+**Use Amazon Cognito for user-management and facilitating the log-in/sign-up process**
+
+**Use Amazon Cognito to enable Multi-Factor Authentication (MFA) when users log-in**
+
+Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily. Amazon Cognito scales to millions of users and supports sign-in with social identity providers, such as Facebook, Google, and Amazon, and enterprise identity providers via SAML 2.0.
+
+A Cognito user pool is a user directory in Amazon Cognito. With a user pool, your users can sign in to your web or mobile app through Amazon Cognito, or federate through a third-party identity provider (IdP). Whether your users sign-in directly or through a third party, all members of the user pool have a directory profile that you can access through an SDK.
+
+Cognito user pools provide support for sign-up and sign-in services as well as security features such as multi-factor authentication (MFA).
+
+
+# S3
+
+A telecom service provider stores its critical customer data on Amazon Simple Storage Service (Amazon S3). Which of the following options can be used to control access to data stored on Amazon S3?
+
+**Bucket policies, Identity and Access Management (IAM) policies**
+
+**Query String Authentication, Access Control Lists (ACLs)**
+
+Customers may use four mechanisms for controlling access to Amazon S3 resources: <br>_Identity and Access Management (IAM) policies <br> Bucket policies <br> Access Control Lists (ACLs) <br> Query String Authentication._
+
+IAM enables organizations with multiple employees to create and manage multiple users under a single AWS account. With IAM policies, customers can grant IAM users fine-grained control to their Amazon S3 bucket or objects while also retaining full control over everything the users do.
+
+With bucket policies, customers can define rules which apply broadly across all requests to their Amazon S3 resources, such as granting write privileges to a subset of Amazon S3 resources. Customers can also restrict access based on an aspect of the request, such as HTTP referrer and IP address.
+
+With ACLs, customers can grant specific permissions (i.e. READ, WRITE, FULL_CONTROL) to specific users for an individual bucket or object.
+
+With Query String Authentication, customers can create a URL to an Amazon S3 object which is only valid for a limited time. Using query parameters to authenticate requests is useful when you want to express a request entirely in a URL. This method is also referred as presigning a URL.
+
+## A digital marketing company has its website hosted on an Amazon S3 bucket A. The development team notices that the static JavaScript files, that are hosted on another S3 bucket B, are not loading correctly on the website. Which of the following solutions can be used to address this issue?
+
+**Configure CORS on the bucket B that is hosting the JavaScript files to allow Bucket A origin to make the requests**
+
+Cross-origin resource sharing (CORS) defines a way for client web applications that are loaded in one domain to interact with resources in a different domain.
+
+To configure your bucket to allow cross-origin requests, you create a CORS configuration, which is an XML document with rules that identify the origins that you will allow to access your bucket, the operations (HTTP methods) that will support for each origin, and other operation-specific information.
+
+For the given use-case, you would create a <CORSRule> in <CORSConfiguration> for bucket B to allow access from the S3 website origin hosted on bucket A.
+ 
+**A financial services company wants to ensure that the customer data is always kept encrypted on Amazon S3 but wants a fully managed solution to create, rotate and remove the encryption keys. As a Developer Associate, which of the following would you recommend to address the given use-case?**
+
+**Server-Side Encryption with Customer Master Keys (CMKs) Stored in AWS Key Management Service (SSE-KMS)**
+
+You have the following options for protecting data at rest in Amazon S3:
+
+Server-Side Encryption – Request Amazon S3 to encrypt your object before saving it on disks in its data centers and then decrypt it when you download the objects.
+
+Client-Side Encryption – Encrypt data client-side and upload the encrypted data to Amazon S3. In this case, you manage the encryption process, the encryption keys, and related tools.
+
+When you use server-side encryption with AWS KMS (SSE-KMS), you can use the default AWS managed CMK, or you can specify a customer-managed CMK that you have already created.
+
+Creating your own customer-managed CMK gives you more flexibility and control over the CMK. For example, you can create, rotate, and disable customer-managed CMKs. You can also define access controls and audit the customer-managed CMKs that you use to protect your data.
+ 
+ 
+## A recruit has created an Amazon Simple Storage Service (S3) bucket. He needs assistance in getting the security principles right for this bucket. Which of the following is NOT a security practice for access control to S3 buckets?
+ 
+ Use of Access Control List (ACL)
+ Security Groups
+ Bucket Policies
+ IAM Roles
+ 
+ 
+Correct option:
+
+**Use of Security Groups** - A security group acts as a virtual firewall for your instances to control incoming and outgoing traffic. S3 is a managed object storage service. _Security Groups are not meant for S3_.
+
+Incorrect options:
+
+**Use of IAM Roles** - For applications on Amazon EC2 or other AWS services to access Amazon S3 resources, they must include valid AWS credentials in their AWS API requests. IAM role is the perfect option in such scenarios. When you use a role, you don't have to distribute long-term credentials (such as a user name and password or access keys) to an Amazon EC2 instance or AWS service such as AWS Lambda. The role supplies temporary permissions that applications can use when they make calls to other AWS resources.
+ 
+**Use of Access Control Lists (ACLs)** - Amazon S3 access control lists (ACLs) enable you to manage access to buckets and objects. Each bucket and object has an ACL attached to it as a subresource. It defines which AWS accounts or groups are granted access and the type of access. When a request is received against a resource, Amazon S3 checks the corresponding ACL to verify that the requester has the necessary access permissions.
+
+**Use of Bucket Policies** - A bucket policy is a resource-based AWS Identity and Access Management (IAM) policy. You add a bucket policy to a bucket to grant other AWS accounts or IAM users access permissions for the bucket and the objects in it. Object permissions apply only to the objects that the bucket owner creates.
+ 
+
 # SHH Keys 
 
 **A key pair, consisting of a public key and a private key, is a set of security credentials that you use to prove your identity when connecting to an Amazon EC2 instance.** Amazon EC2 stores the public key on your instance, and you store the private key. For Linux instances, the private key allows you to securely SSH into your instance. Anyone who possesses your private key can connect to your instances, so it's important that you store your private key in a secure place.
@@ -17,6 +127,14 @@ Here is the correct way of reusing SSH keys in your AWS Regions:
 2) Set the AWS Region you wish to import to.
 
 3) Import the public SSH key into the new Region.
+
+# SSM Parameter Store
+
+### Your application is deployed automatically using AWS Elastic Beanstalk. Your YAML configuration files are stored in the folder .ebextensions and new files are added or updated often. The DevOps team does not want to re-deploy the application every time there are configuration changes, instead, they would rather manage configuration externally, securely, and have it load dynamically into the application at runtime. What option allows you to do this?
+
+Use SSM Parameter Store
+
+_AWS Systems Manager Parameter Store provides secure, hierarchical storage for configuration data management and secrets management_. You can store data such as passwords, database strings, and license codes as parameter values. For the given use-case, as the DevOps team does not want to re-deploy the application every time there are configuration changes, so _they can use the SSM Parameter Store to store the configuration externally_.
 
 # Geolocation
 
@@ -98,6 +216,18 @@ To create signed URLs or signed cookies, you need a signer. A signer is either a
 ## AWS Billing and Cost Management
 
 **You need to activate IAM user access to the Billing and Cost Management console for all the users who need access - By default, IAM users do not have access to the AWS Billing and Cost Management console.** You or your account administrator must grant users access. You can do this by activating IAM user access to the Billing and Cost Management console and attaching an IAM policy to your users. Then, you need to activate IAM user access for IAM policies to take effect. You only need to activate IAM user access once.
+ 
+ # EC2 
+ 
+ ### An application runs on an EC2 instance and processes orders on a nightly basis. This EC2 instance needs to access the orders that are stored in S3. How would you recommend the EC2 instance access the orders securely?
+ 
+**Use an IAM role**
+
+IAM roles have been incorporated so that your applications can securely make API requests from your instances, without requiring you to manage the security credentials that the applications use. Instead of creating and distributing your AWS credentials, you can delegate permission to make API requests using IAM roles.
+
+Amazon EC2 uses an instance profile as a container for an IAM role. When you create an IAM role using the IAM console, the console creates an instance profile automatically and gives it the same name as the role to which it corresponds.
+
+This is the most secure option as the role assigned to EC2 can be used to access S3 without storing any credentials onto the EC2 instance.
 
 ## Permissions & Policy Types 
 
@@ -216,6 +346,28 @@ You want complete control over how a request is sent to AWS.
 **Lambda Authorizer** - Lambda authorizers are Lambda functions that control access to REST API methods using bearer token authentication—as well as information described by headers, paths, query strings, stage variables, or context variables request parameters. Lambda authorizers are used to control who can invoke REST API methods.
 
 **Cognito User Pools** - Amazon Cognito user pools let you create customizable authentication and authorization solutions for your REST APIs. Amazon Cognito user pools are used to control who can invoke REST API methods.
+ 
+**You team maintains a public API Gateway that is accessed by clients from another domain. Usage has been consistent for the last few months but recently it has more than doubled. As a result, your costs have gone up and would like to prevent other unauthorized domains from accessing your API. Which of the following actions should you take?**
+ 
+**Restrict access by using CORS** - Cross-origin resource sharing (CORS) _defines a way for client web applications that are loaded in one domain to interact with resources in a different domain_. When your API's resources receive requests from a domain other than the API's own domain and you want to restrict servicing these requests, you must disable cross-origin resource sharing (CORS) for selected methods on the resource.
+ 
+ # EBS
+ 
+### A company has a workload that requires 14,000 consistent IOPS for data that must be durable and secure. The compliance standards of the company state that the data should be secure at every stage of its lifecycle on all of the EBS volumes they use. Which of the following statements are true regarding data security on EBS?
+ 
+Amazon EBS works with AWS KMS to encrypt and decrypt your EBS volume. You can encrypt both the boot and data volumes of an EC2 instance. When you create an encrypted EBS volume and attach it to a supported instance type, the following types of data are encrypted:
+
+Data at rest inside the volume
+
+All data moving between the volume and the instance
+
+All snapshots created from the volume
+
+All volumes created from those snapshots
+
+**EBS volumes support both in-flight encryption and encryption at rest using KMS** - This is a correct statement. Encryption operations occur on the servers that host EC2 instances, ensuring the security of both data-at-rest and data-in-transit between an instance and its attached EBS storage.
+ 
+ 
 
 
 
