@@ -16,6 +16,19 @@ How X-Ray works:
 
 **Create an IAM role with write permissions and assign it to the resources running your application.** You can use AWS Identity and Access Management (IAM) to grant X-Ray permissions to users and compute resources in your account. This should be one of the first places you start by checking that your permissions are properly configured before exploring other troubleshooting options.
 
+
+### An IT company has its serverless stack integrated with AWS X-Ray. The developer at the company has noticed a high volume of data going into X-Ray and the AWS monthly usage charges have skyrocketed as a result. The developer has requested changes to mitigate the issue. As a Developer Associate, which of the following solutions would you recommend to obtain tracing trends while reducing costs with minimal disruption?
+
+AWS X-Ray helps developers analyze and debug production, distributed applications, such as those built using a microservices architecture. With X-Ray, you can understand how your application and its underlying services are performing to identify and troubleshoot the root cause of performance issues and errors. X-Ray provides an end-to-end view of requests as they travel through your application, and shows a map of your application’s underlying components.
+
+**Enable X-Ray sampling**
+
+To ensure efficient tracing and provide a representative sample of the requests that your application serves, the X-Ray SDK applies a sampling algorithm to determine which requests get traced. By default, the X-Ray SDK records the first request each second, and five percent of any additional requests. X-Ray sampling is enabled directly from the AWS console, hence your application code does not need to change.
+
+By customizing sampling rules, you can control the amount of data that you record, and modify sampling behavior on the fly without modifying or redeploying your code. Sampling rules tell the X-Ray SDK how many requests to record for a set of criteria. By default, the X-Ray SDK records the first request each second, and five percent of any additional requests.
+
+
+
 ## CloudFormation
 
 CloudFormation currently supports the following parameter types:
@@ -32,6 +45,14 @@ List<AWS::EC2::SecurityGroup::Id> – An array of security group IDs
 List<AWS::EC2::Subnet::Id> – An array of subnet IDs
 
   
+**You are working for a shipping company that is automating the creation of ECS clusters with an Auto Scaling Group using an AWS CloudFormation template that accepts cluster name as its parameters. Initially, you launch the template with input value 'MainCluster', which deployed five instances across two availability zones. The second time, you launch the template with an input value 'SecondCluster'. However, the instances created in the second run were also launched in 'MainCluster' even after specifying a different cluster name. What is the root cause of this issue?**
+
+**The cluster name Parameter has not been updated in the file /etc/ecs/ecs.config during bootstrap** - In the ecs.config file you have to configure the parameter ECS_CLUSTER='your_cluster_name' to register the container instance with a cluster named 'your_cluster_name'.
+  
+Sample config for ECS Container Agent:
+![image](https://user-images.githubusercontent.com/44325167/131658915-b35d8273-cb52-4203-858d-99483072d0f9.png)
+
+
 ## Internet Gateway 
   
 **While troubleshooting, a developer realized that the Amazon EC2 instance is unable to connect to the Internet using the Internet Gateway. Which conditions should be met for Internet connectivity to be established?**
@@ -55,6 +76,35 @@ With CloudTrail, you can log, continuously monitor, and retain account activity 
 
 How Cloudtrail works:
 ![image](https://user-images.githubusercontent.com/44325167/129903569-511c8d9f-59e3-4aa4-981e-3b00a66608f3.png)
+  
+# EC2 
+  
+**A telecommunications company that provides internet service for mobile device users maintains over 100 c4.large instances in the us-east-1 region. The EC2 instances run complex algorithms. The manager would like to track CPU utilization of the EC2 instances as frequently as every 10 seconds. Which of the following represents the BEST solution for the given use-case?**
+
+_Create a high-resolution custom metric and push the data using a script triggered every 10 seconds_
+
+Using **high-resolution custom metric**, **your applications can publish metrics to CloudWatch with 1-second resolution**. You can watch the metrics scroll across your screen seconds after they are published and you can set up high-resolution CloudWatch Alarms that evaluate as frequently as every 10 seconds. You can alert with **High-Resolution Alarms**, **as frequently as 10-second periods**. High-Resolution Alarms allow you to react and take actions faster and support the same actions available today with standard 1-minute alarms.
+  
+**A developer from your team has configured the load balancer to route traffic equally between instances or across Availability Zones. However, Elastic Load Balancing (ELB) routes more traffic to one instance or Availability Zone than the others. Why is this happening and how can it be fixed?**
+  
+**Sticky sessions are enabled for the load balancer** - This can be the reason for potential unequal traffic routing by the load balancer. **Sticky sessions are a mechanism to route requests to the same target in a target group. This is useful for servers that maintain state information in order to provide a continuous experience to clients. To use sticky sessions, the clients must support cookies**.
+
+When a load balancer first receives a request from a client, it routes the request to a target, generates a cookie named AWSALB that encodes information about the selected target, encrypts the cookie, and includes the cookie in the response to the client. The client should include the cookie that it receives in subsequent requests to the load balancer. When the load balancer receives a request from a client that contains the cookie, if sticky sessions are enabled for the target group and the request goes to the same target group, the load balancer detects the cookie and routes the request to the same target.
+
+If you use duration-based session stickiness, configure an appropriate cookie expiration time for your specific use case. If you set session stickiness from individual applications, use session cookies instead of persistent cookies where possible.
+  
+**Instances of a specific capacity type aren’t equally distributed across Availability Zones** - A Classic Load Balancer with HTTP or HTTPS listeners might route more traffic to higher-capacity instance types. This distribution aims to prevent lower-capacity instance types from having too many outstanding requests. It’s a best practice to use similar instance types and configurations to reduce the likelihood of capacity gaps and traffic imbalances.
+
+A traffic imbalance might also occur if you have instances of similar capacities running on different Amazon Machine Images (AMIs). In this scenario, the imbalance of the traffic in favor of higher-capacity instance types is desirable.
+  
+# AWS Organizations 
+
+If you have created an organization in AWS Organizations, you can also create a trail that will log all events for all AWS accounts in that organization. This is referred to as an **organization trail.**
+
+**By default, CloudTrail tracks only bucket-level actions. _To track object-level actions, you need to enable Amazon S3 data events_** - This is a correct statement. **AWS CloudTrail supports Amazon S3 Data Events, apart from bucket Events**. You can record all API actions on S3 Objects and receive detailed information such as the AWS account of the caller, IAM user role of the caller, time of the API call, IP address of the API, and other details. All events are delivered to an S3 bucket and CloudWatch Events, allowing you to take programmatic actions on the events.
+  
+**Member accounts will be able to see the organization trail, but cannot modify or delete it** - Organization trails must be created in the master account, and when specified as applying to an organization, are automatically applied to all member accounts in the organization. Member accounts will be able to see the organization trail, but cannot modify or delete it. By default, member accounts will not have access to the log files for the organization trail in the Amazon S3 bucket.
+
 
 # Config 
 
@@ -76,10 +126,21 @@ An EC2/On-Premises deployment hook is executed once per deployment to an instanc
 
 # A multi-national company has multiple business units with each unit having its own AWS account. The development team at the company would like to debug and trace data across accounts and visualize it in a centralized account. As a Developer Associate, which of the following solutions would you suggest for the given use-case?
 
+# Lambda
+  
+**An IT company has migrated to a serverless application stack on the AWS Cloud with the compute layer being implemented via Lambda functions. The engineering managers would like to actively troubleshoot any failures in the Lambda functions. As a Developer Associate, which of the following solutions would you suggest for this use-case?**
+  
+**The developers should insert logging statements in the Lambda function code which are then available via CloudWatch logs**
+
+When you invoke a Lambda function, two types of error can occur. Invocation errors occur when the invocation request is rejected before your function receives it. Function errors occur when your function's code or runtime returns an error. Depending on the type of error, the type of invocation, and the client or service that invokes the function, the retry behavior, and the strategy for managing errors varies.
+
+Lambda function failures are commonly caused by:
+
+Permissions issues Code issues Network issues Throttling Invoke API 500 and 502 errors
+
+**You can insert logging statements into your code to help you validate that your code is working as expected. Lambda automatically integrates with CloudWatch Logs and pushes all logs from your code to a CloudWatch Logs group associated with a Lambda function, which is named /aws/lambda/<function name>.**
 
 
-
-# EC2
 
 ## User Data 
 
@@ -100,6 +161,13 @@ Application Load Balancer Configuration for Security Groups and Health Check Rou
 
 Access logs for your Application Load Balancer:
 ![image](https://user-images.githubusercontent.com/44325167/129908289-80f38787-9de1-4b31-8095-2c1319f65542.png)
+
+
+# ECS
+  
+### A junior developer working on ECS instances terminated a container instance in Amazon Elastic Container Service (Amazon ECS) as per instructions from the team lead. But the container instance continues to appear as a resource in the ECS cluster. As a Developer Associate, which of the following solutions would you recommend to fix this behavior?
+  
+**You terminated the container instance while it was in STOPPED state, that lead to this synchronization issues** - _If you terminate a container instance while it is in the STOPPED state, that container instance isn't automatically removed from the cluster_. **You will need to deregister your container instance in the STOPPED state by using the Amazon ECS console or AWS Command Line Interface. Once deregistered**, the container instance will no longer appear as a resource in your Amazon ECS cluster.
 
 
 
