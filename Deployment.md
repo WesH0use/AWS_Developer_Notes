@@ -202,3 +202,12 @@ When you deploy your services using Amazon Elastic Container Service (Amazon ECS
 
 ![image](https://user-images.githubusercontent.com/44325167/131115983-9f821992-f535-4cb5-a5b3-557148a6c368.png)
 
+## API 
+
+**A company follows collaborative development practices. The engineering manager wants to isolate the development effort by setting up simulations of API components owned by various development teams. Which API integration type is best suited for this requirement?**
+
+**MOCK**
+
+This type of integration lets API Gateway return a response without sending the request further to the backend. This is useful for API testing because it can be used to test the integration setup without incurring charges for using the backend and to enable collaborative development of an API.
+
+In collaborative development, a team can isolate their development effort by setting up simulations of API components owned by other teams by using the MOCK integrations. It is also used to return CORS-related headers to ensure that the API method permits CORS access. In fact, the API Gateway console integrates the OPTIONS method to support CORS with a mock integration.
