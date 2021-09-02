@@ -1,5 +1,25 @@
 # Refactoring in AWS
 
+# Websocket APIs
+
+### A banking application needs to send real-time alerts and notifications based on any updates from the backend services. The company wants to avoid implementing complex polling mechanisms for these notifications. Which of the following types of APIs supported by the Amazon API Gateway is the right fit?
+
+In a **WebSocket API**, the client and the server can both send messages to each other at any time. Backend servers can easily push data to connected users and devices, _avoiding the need to implement complex polling mechanisms_.
+
+For example, you could build a serverless application using an API Gateway WebSocket API and AWS Lambda to send and receive messages to and from individual users or groups of users in a chat room. Or you could invoke backend services such as AWS Lambda, Amazon Kinesis, or an HTTP endpoint based on message content.
+
+**You can use API Gateway WebSocket APIs to build secure, real-time communication applications without having to provision or manage any servers to manage connections or large-scale data exchanges**. Targeted use cases include real-time applications such as the following:<br>
+
+Chat applications<br>
+Real-time dashboards such as stock tickers<br>
+Real-time alerts and notifications<br>
+
+**API Gateway provides WebSocket API management functionality such as the following**:<br>
+
+Monitoring and throttling of connections and messages<br>
+Using AWS X-Ray to trace messages as they travel through the APIs to backend services<br>
+Easy integration with HTTP/HTTPS endpoints<br>
+
 ## A data analytics company is processing real-time Internet-of-Things (IoT) data via Kinesis Producer Library (KPL) and sending the data to a Kinesis Data Streams driven application. The application has halted data processing because of a ProvisionedThroughputExceeded exception. Which of the following actions would help in addressing this issue? (Select two)
 
 Amazon Kinesis Data Streams enables you to build custom applications that process or analyze streaming data for specialized needs. You can continuously add various types of data such as clickstreams, application logs, and social media to an Amazon Kinesis data stream from hundreds of thousands of sources.
@@ -14,7 +34,24 @@ If this is due to a temporary rise of the data stream’s input data rate, retry
 If this is due to a sustained rise of the data stream’s input data rate, you should increase the number of shards within your data stream to provide enough capacity for the put data calls to consistently succeed.
 
 
-## EC2 Autoscaling 
+# RDS 
+
+## A mobile gaming company is experiencing heavy read traffic to its Amazon Relational Database Service (RDS) database that retrieves player’s scores and stats. The company is using RDS database instance type db.m5.12xlarge, which is not cost-effective for their budget. They would like to implement a strategy to deal with the high volume of read traffic, reduce latency, and also downsize the instance size to cut costs. As a Developer, which of the following solutions do you recommend?
+
+**Setup ElastiCache in front of RDS**
+
+Amazon ElastiCache is an ideal front-end for data stores such as Amazon RDS, providing a high-performance middle tier for applications with extremely high request rates and/or low latency requirements. The best part of caching is that it’s minimally invasive to implement and by doing so, your application performance regarding both scale and speed is dramatically improved.
+
+
+# EC2 
+
+## As a developer, you are looking at creating a custom configuration for Amazon EC2 instances running in an Auto Scaling group. The solution should allow the group to auto-scale based on the metric of 'average RAM usage' for your Amazon EC2 instances. Which option provides the best solution?
+
+**Create a custom metric in CloudWatch and make your instances send data to it using PutMetricData**. Then, create an alarm based on this metric - You can create a custom CloudWatch metric for your EC2 Linux instance statistics by creating a script through the AWS Command Line Interface (AWS CLI). Then, you can monitor that metric by pushing it to CloudWatch.
+
+You can publish your own metrics to CloudWatch using the AWS CLI or an API. Metrics produced by AWS services are standard resolution by default. When you publish a custom metric, you can define it as either standard resolution or high resolution. When you publish a high-resolution metric, CloudWatch stores it with a resolution of 1 second, and you can read and retrieve it with a period of 1 second, 5 seconds, 10 seconds, 30 seconds, or any multiple of 60 seconds.
+
+High-resolution metrics can give you more immediate insight into your application's sub-minute activity. But, every PutMetricData call for a custom metric is charged, so calling PutMetricData more often on a high-resolution metric can lead to higher charges.
 
 With **target tracking scaling policies**, you select a scaling metric and set a target value. Amazon EC2 Auto Scaling creates and manages the CloudWatch alarms that trigger the scaling policy and calculates the scaling adjustment based on the metric and the target value.
 
@@ -52,6 +89,29 @@ You can specify that Amazon EC2 should do one of the following when it interrupt
 
 **The default is to terminate Spot Instances when they are interrupted**.
 
+## You are running a cloud file storage website with an Internet-facing Application Load Balancer, which routes requests from users over the internet to 10 registered Amazon EC2 instances. Users are complaining that your website always asks them to re-authenticate when they switch pages. You are puzzled because this behavior is not seen in your local machine or dev environment. What could be the reason?
+
+**The Load Balancer does not have stickiness enabled** - Sticky sessions are a mechanism to route requests to the same target in a target group. This is useful for servers that maintain state information to provide a continuous experience to clients. To use sticky sessions, the clients must support cookies.
+
+When a load balancer first receives a request from a client, it routes the request to a target, generates a cookie named AWSALB that encodes information about the selected target, encrypts the cookie, and includes the cookie in the response to the client. The client should include the cookie that it receives in subsequent requests to the load balancer. When the load balancer receives a request from a client that contains the cookie, if sticky sessions are enabled for the target group and the request goes to the same target group, the load balancer detects the cookie and routes the request to the same target.
+
+## As a Senior Developer, you manage 10 Amazon EC2 instances that make read-heavy database requests to the Amazon RDS for PostgreSQL. You need to make this architecture resilient for disaster recovery. Which of the following features will help you prepare for database disaster recovery? 
+
+**Use cross-Region Read Replicas**
+
+In addition to using Read Replicas to reduce the load on your source DB instance, you can also use Read Replicas to implement a DR solution for your production DB environment. If the source DB instance fails, you can promote your Read Replica to a standalone source server. Read Replicas can also be created in a different Region than the source database. Using a cross-Region Read Replica can help ensure that you get back up and running if you experience a regional availability issue.
+
+**Enable the automated backup feature of Amazon RDS in a multi-AZ deployment that creates backups in a single AWS Region**
+
+Amazon RDS provides high availability and failover support for DB instances using Multi-AZ deployments. Amazon RDS uses several different technologies to provide failover support. _Multi-AZ deployments for MariaDB, MySQL, Oracle, and PostgreSQL DB instances use Amazon's failover technology_.
+
+The automated backup feature of Amazon RDS enables point-in-time recovery for your database instance. Amazon RDS will backup your database and transaction logs and store both for a user-specified retention period. If it’s a Multi-AZ configuration, backups occur on the standby to reduce I/O impact on the primary. Automated backups are limited to a single AWS Region while manual snapshots and Read Replicas are supported across multiple Regions.
+
+
+## You have deployed a traditional 3-tier web application architecture with a Classic Load Balancer, an Auto Scaling group, and an Amazon Relational Database Service (RDS) database. Users are reporting that they have to re-authenticate into the website often. Which of the following represents a scalable solution to make the application tier stateless and outsource the session information?
+
+**Add an ElastiCache Cluster** - To provide a shared data storage for sessions that can be accessed from any individual web server, you can abstract the HTTP sessions from the web servers themselves. A common solution for this is to leverage an ElastiCache service offering which is an In-Memory Key/Value store such as Redis and Memcached.
+
 ## VPC 
 
 ### A CRM application is hosted on Amazon EC2 instances with the database tier using DynamoDB. The customers have raised privacy and security concerns regarding sending and receiving data across the public internet. As a developer associate, which of the following would you suggest as an optimal solution for providing communication between EC2 instances and DynamoDB without using the public internet?
@@ -64,6 +124,39 @@ Using Amazon VPC Endpoints to Access DynamoDB:
 
 ![image](https://user-images.githubusercontent.com/44325167/131130761-72f32c61-af3f-4bdf-b71c-12d6675f4a97.png)
 
+# Elastic Beanstalk 
+
+## You company runs business logic on smaller software components that perform various functions. Some functions process information in a few seconds while others seem to take a long time to complete. Your manager asked you to decouple components that take a long time to ensure software applications stay responsive under load. You decide to configure Amazon Simple Queue Service (SQS) to work with your Elastic Beanstalk configuration. Which of the following Elastic Beanstalk environment should you choose to meet this requirement?
+
+With Elastic Beanstalk, you can quickly deploy and manage applications in the AWS Cloud without having to learn about the infrastructure that runs those applications. Elastic Beanstalk reduces management complexity without restricting choice or control. You simply upload your application, and Elastic Beanstalk automatically handles the details of capacity provisioning, load balancing, scaling, and application health monitoring.
+
+**Dedicated worker environment** - If your AWS Elastic Beanstalk application performs operations or workflows that take a long time to complete, you can offload those tasks to a dedicated worker environment. Decoupling your web application front end from a process that performs blocking operations is a common way to ensure that your application stays responsive under load.
+
+A long-running task is anything that substantially increases the time it takes to complete a request, such as processing images or videos, sending emails, or generating a ZIP archive. These operations can take only a second or two to complete, but a delay of a few seconds is a lot for a web request that would otherwise complete in less than 500 ms.
+
+# S3
+
+## Your team lead has requested code review of your code for Lambda functions. Your code is written in Python and makes use of the Amazon Simple Storage Service (S3) to upload logs to an S3 bucket. After the review, your team lead has recommended reuse of execution context to improve the Lambda performance. Which of the following actions will help you implement the recommendation?
+
+**Move the Amazon S3 client initialization, out of your function handler** - AWS best practices for Lambda suggest taking advantage of execution context reuse to improve the performance of your functions. Initialize SDK clients and database connections outside of the function handler, and cache static assets locally in the /tmp directory. Subsequent invocations processed by the same instance of your function can reuse these resources. This saves execution time and cost. To avoid potential data leaks across invocations, don’t use the execution context to store user data, events, or other information with security implications.
+
+## A company has hosted its website on an Amazon S3 bucket and have used another Amazon S3 bucket for storing the rest of the assets like images, fonts, etc. Which technique/mechanism will help the hosted website access its assets without access/permission issues?
+
+S3 Cross-Origin Resource Sharing (CORS) - Cross-origin resource sharing (CORS) defines a way for client web applications that are loaded in one domain to interact with resources in a different domain. With CORS support, you can build rich client-side web applications with Amazon S3 and selectively allow cross-origin access to your Amazon S3 resources.
+
+To configure your bucket to allow cross-origin requests, you create a CORS configuration. The CORS configuration is a document with rules that identify the origins that you will allow to access your bucket, the operations (HTTP methods) that will support each origin, and other operation-specific information. You can add up to 100 rules to the configuration. You can add the CORS configuration as the cors subresource to the bucket.
+
+If you are configuring CORS in the S3 console, you must use JSON to create a CORS configuration. The new S3 console only supports JSON CORS configurations.
+
+## Your company hosts a static website on Amazon Simple Storage Service (S3) written in HTML5. The website targets aviation enthusiasts and it has grown a worldwide audience with hundreds of thousands of visitors accessing the website now on a monthly basis. While users in the United States have a great user experience, users from other parts of the world are experiencing slow responses and lag. Which service can mitigate this issue?
+
+**Use Amazon CloudFront**
+
+Storing your static content with S3 provides a lot of advantages. But to help optimize your application’s performance and security while effectively managing cost, AWS recommends that you also set up Amazon CloudFront to work with your S3 bucket to serve and protect the content. **CloudFront is a content delivery network (CDN) service that delivers static and dynamic web content, video streams, and APIs around the world, securely and at scale. By design, delivering data out of CloudFront can be more cost-effective than delivering it from S3 directly to your users**.
+
+_By caching your content in Edge Locations, CloudFront reduces the load on your S3 bucket and helps ensure a faster response for your users when they request content_. In addition, data transfer out for content by using CloudFront is often more cost-effective than serving files directly from S3, and there is no data transfer fee from S3 to CloudFront.
+
+A security feature of CloudFront is Origin Access Identity (OAI), which restricts access to an S3 bucket and its content to only CloudFront and operations it performs.
 
 ## Lambda 
 
@@ -109,6 +202,23 @@ When the backend returns the query results shown above, the manager of the produ
 **To enable this, we need to provide API Gateway with a mapping template** to translate the data from the backend format like so:
 
 ![Screen Shot 2021-08-23 at 2 19 40 PM](https://user-images.githubusercontent.com/44325167/130445834-9917ea46-4cdb-4676-a5cb-b8e78a187a7d.png)
+
+## A developer is configuring an Amazon API Gateway as a front door to expose backend business logic. To keep the solution cost-effective, the developer has opted for HTTP APIs. Which of the following services are not available as an HTTP API via Amazon API Gateway?
+
+AWS Identity and Access Management (IAM)<br>
+AWS Lambda<br>
+AWS Application Firewall (AWS WAF)<br>
+AWS Cognito<br>
+
+**AWS Web Application Firewall (AWS WAF)**
+
+Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale.
+
+API Gateway REST APIs: A collection of HTTP resources and methods that are integrated with backend HTTP endpoints, Lambda functions, or other AWS services. You can deploy this collection in one or more stages. Typically, API resources are organized in a resource tree according to the application logic. Each API resource can expose one or more API methods that have unique HTTP verbs supported by API Gateway.
+
+API Gateway HTTP API: A collection of routes and methods that are integrated with backend HTTP endpoints or Lambda functions. You can deploy this collection in one or more stages. Each route can expose one or more API methods that have unique HTTP verbs supported by API Gateway.
+
+AWS Lambda, AWS Identity and Access Management (IAM) and Amazon Cognito services are all available as HTTP APIs. AWS Web Application Firewall (AWS WAF) however, is only available in REST APIs.
 
 
 ## Dead letter queue (SQS)
