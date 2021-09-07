@@ -74,3 +74,9 @@ Queue tags are case insensitive. A new tag with a key identical to that of an ex
 
 Amazon SQS leverages the AWS cloud to dynamically scale, based on demand. SQS scales elastically with your application so you don't have to worry about capacity planning and pre-provisioning. For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue).
 
+## Your company has been hired to build a resilient mobile voting app for an upcoming music award show that expects to have 5 to 20 million viewers. The mobile voting app will be marketed heavily months in advance so you are expected to handle millions of messages in the system. You are configuring Amazon Simple Queue Service (SQS) queues for your architecture that should receive messages from 20 KB to 200 KB. Is it possible to send these messages to SQS?
+
+**Yes, the max message size is 256KB**
+
+The minimum message size is 1 byte (1 character). The maximum is 262,144 bytes (256 KB).
+
