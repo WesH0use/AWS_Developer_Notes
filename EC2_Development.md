@@ -73,6 +73,25 @@ Regional vs Zonal Reserved Instances:
 
 _**aws ec2 monitor-instances --instance-ids i-1234567890abcdef0**_- This enables detailed monitoring for a running instance.
 
+# Application Load Balancers
+
+**A developer is configuring an Application Load Balancer (ALB) to direct traffic to the application's EC2 instances and Lambda functions. Which of the following characteristics of the ALB can be identified as correct? (Select two)**
+
+An ALB has three possible target types: **Instance, IP and Lambda**
+
+When you create a target group, you specify its target type, which determines the type of target you specify when registering targets with this target group. After you create a target group, you cannot change its target type. The following are the possible target types:
+
+### Instance - The targets are specified by instance ID
+### IP - The targets are IP addresses
+### Lambda - The target is a Lambda function
+
+**You can not specify publicly routable IP addresses to an ALB**
+
+When the target type is IP, you can specify IP addresses from specific CIDR blocks only. You can't specify publicly routable IP addresses.
+
+
+
+
 
 
 
