@@ -136,3 +136,13 @@ Use the plaintext data key to decrypt data outside of AWS KMS, then erase the pl
 A **DynamoDB** stream is an ordered flow of information about changes to items in a DynamoDB table. When you enable a stream on a table, DynamoDB Streams captures a time-ordered sequence of item-level modifications in any DynamoDB table, and stores this information in a log for up to 24 hours. Applications can access this log and view the data items as they appeared before and after they were modified, in near real-time.
 
 Whenever an application creates, updates, or deletes items in the table, DynamoDB Streams writes a stream record with the primary key attributes of the items that were modified.
+
+## The development team at a company wants to insert vendor records into an Amazon DynamoDB table as soon as the vendor uploads a new file into an Amazon S3 bucket. As a Developer Associate, which set of steps would you recommend to achieve this?
+
+**Create an S3 event to invoke a Lambda function that inserts records into DynamoDB**
+
+The _Amazon S3 notification feature enables you to receive notifications when certain events happen in your bucket_. To enable notifications, you must first add a notification configuration that identifies the events you want Amazon S3 to publish and the destinations where you want Amazon S3 to send the notifications. You store this configuration in the notification subresource that is associated with a bucket.
+
+Amazon S3 APIs such as PUT, POST, and COPY can create an object. Using these event types, you can enable notification when an object is created using a specific API, or you can use the s3:ObjectCreated:* event type to request notification regardless of the API that was used to create an object.
+
+For the given use-case, you would create an S3 event notification that triggers a Lambda function whenever we have a PUT object operation in the S3 bucket. The Lambda function in turn would execute custom code to inserts records into DynamoDB
