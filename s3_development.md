@@ -43,3 +43,9 @@ S3 Object Ownership has two settings:
 
 1. **Object writer** – The uploading account will own the object.<br>
 2. **Bucket owner preferred** – The bucket owner will own the object if the object is uploaded with the bucket-owner-full-control canned ACL. Without this setting and canned ACL, the object is uploaded and remains owned by the uploading account.
+
+### You are getting ready for an event to show off your Alexa skill written in JavaScript. As you are testing your voice activation commands you find that some intents are not invoking as they should and you are struggling to figure out what is happening. You included the following code console.log(JSON.stringify(this.event)) in hopes of getting more details about the request to your Alexa skill. You would like the logs stored in an Amazon Simple Storage Service (S3) bucket named MyAlexaLog. How do you achieve this?
+
+**Use CloudWatch integration feature with S3**
+
+You can export log data from your CloudWatch log groups to an Amazon S3 bucket and use this data in custom processing and analysis, or to load onto other systems.
