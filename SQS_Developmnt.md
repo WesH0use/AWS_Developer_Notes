@@ -74,9 +74,42 @@ Queue tags are case insensitive. A new tag with a key identical to that of an ex
 
 Amazon SQS leverages the AWS cloud to dynamically scale, based on demand. SQS scales elastically with your application so you don't have to worry about capacity planning and pre-provisioning. For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue).
 
-## Your company has been hired to build a resilient mobile voting app for an upcoming music award show that expects to have 5 to 20 million viewers. The mobile voting app will be marketed heavily months in advance so you are expected to handle millions of messages in the system. You are configuring Amazon Simple Queue Service (SQS) queues for your architecture that should receive messages from 20 KB to 200 KB. Is it possible to send these messages to SQS?
+### Your company has been hired to build a resilient mobile voting app for an upcoming music award show that expects to have 5 to 20 million viewers. The mobile voting app will be marketed heavily months in advance so you are expected to handle millions of messages in the system. You are configuring Amazon Simple Queue Service (SQS) queues for your architecture that should receive messages from 20 KB to 200 KB. Is it possible to send these messages to SQS?
 
 **Yes, the max message size is 256KB**
 
 The minimum message size is 1 byte (1 character). The maximum is 262,144 bytes (256 KB).
 
+### DevOps engineers are developing an order processing system where notifications are sent to a department whenever an order is placed for a product. The system also pushes identical notifications of the new order to a processing module that would allow EC2 instances to handle the fulfillment of the order. In the case of processing errors, the messages should be allowed to be re-processed at a later stage. The order processing system should be able to scale transparently without the need for any manual or programmatic provisioning of resources. Which of the following solutions can be used to address this use-case?
+
+**SNS + SQS**
+
+Amazon SNS enables message filtering and fanout to a large number of subscribers, including serverless functions, queues, and distributed systems. Additionally, Amazon SNS fans out notifications to end users via mobile push messages, SMS, and email.
+
+Amazon Simple Queue Service (SQS) is a fully managed message queuing service that enables you to decouple and scale microservices, distributed systems, and serverless applications. SQS offers two types of message queues. Standard queues offer maximum throughput, best-effort ordering, and at-least-once delivery. **SQS _FIFO queues are designed to guarantee that messages are processed exactly once, in the exact order that they are sent_**.
+
+Because each buffered request can be processed independently, Amazon _SQS can scale transparently to handle the load without any provisioning instructions from you_.
+
+SNS and SQS can be used to create a fanout messaging scenario in which messages are "pushed" to multiple subscribers, which eliminates the need to periodically check or poll for updates and enables parallel asynchronous processing of the message by the subscribers. SQS can allow for later re-processing and dead letter queues. This is called the fan-out pattern.
+
+## AWS SDK for Java
+
+### A developer is creating access credentials for an Amazon EC2 instance that hosts the web application using AWS SDK for Java. If the default credentials provider chain is used on the instance, which parameter will be checked first for the required credentials?
+
+**Parameters _aws.accessKeyId_ and _aws.secretKey_ will be checked in the Java system properties**
+
+If your application creates an AWS client using the default constructor, then the client will search for credentials using the default credentials provider chain, in the following order:
+
+In the Java system properties: aws.accessKeyId and aws.secretKey.
+
+In system environment variables: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+
+In the default credentials file (the location of this file varies by platform).
+
+Credentials delivered through the Amazon EC2 container service if the AWS_CONTAINER_CREDENTIALS_RELATIVE_URI environment variable is set and security manager has permission to access the variable.
+
+In the instance profile credentials, which exist within the instance metadata associated with the IAM role for the EC2 instance.
+
+Web Identity Token credentials from the environment or container.
+
+The instance profile credentials step in the default provider chain is available only when running your application on an Amazon EC2 instance, but provides the greatest ease of use and best security when working with Amazon EC2 instances. You can also pass an InstanceProfileCredentialsProvider instance directly to the client constructor to get instance profile credentials without proceeding through the entire default provider chain.
