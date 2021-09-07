@@ -42,3 +42,22 @@ Amazon Kinesis Data Streams (KDS) is a massively scalable and durable real-time 
 
 Kinesis Data Streams enables real-time processing of streaming big data. It provides ordering of records, as well as the ability to read and/or replay records in the same order to multiple Amazon Kinesis Applications. The Amazon Kinesis Client Library (KCL) delivers all records for a given partition key to the same record processor, making it easier to build multiple applications reading from the same Amazon Kinesis data stream (for example, to perform counting, aggregation, and filtering).
 
+## You have an Amazon Kinesis Data Stream with 10 shards, and from the metrics, you are well below the throughput utilization of 10 MB per second to send data. You send 3 MB per second of data and yet you are receiving _ProvisionedThroughputExceededException_ errors frequently. What is the likely cause of this?
+
+**The partition key that you have selected isn't distributed enough**
+
+Amazon Kinesis Data Streams enables you to build custom applications that process or analyze streaming data for specialized needs.
+
+A Kinesis data stream is a set of shards. A shard is a uniquely identified sequence of data records in a stream. A stream is composed of one or more shards, each of which provides a fixed unit of capacity.
+
+**The partition key is used by Kinesis Data Streams to distribute data across shards.** Kinesis Data Streams segregates the data records that belong to a stream into multiple shards, using the partition key associated with each data record to determine the shard to which a given data record belongs.
+
+Kinesis Data Streams Overview:
+
+![image](https://user-images.githubusercontent.com/44325167/132333332-67c85253-9b7d-4b72-9f14-fc81bfd8838c.png)
+
+For the given use-case, as the partition key is not distributed enough, all the data is getting skewed at a few specific shards and not leveraging the entire cluster of shards.
+
+You can also use metrics to determine which are your "hot" or "cold" shards, that is, shards that are receiving much more data, or much less data, than expected. You could then selectively split the hot shards to increase capacity for the hash keys that target those shards. Similarly, you could merge cold shards to make better use of their unused capacity.
+
+
