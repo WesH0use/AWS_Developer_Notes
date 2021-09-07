@@ -146,3 +146,11 @@ The _Amazon S3 notification feature enables you to receive notifications when ce
 Amazon S3 APIs such as PUT, POST, and COPY can create an object. Using these event types, you can enable notification when an object is created using a specific API, or you can use the s3:ObjectCreated:* event type to request notification regardless of the API that was used to create an object.
 
 For the given use-case, you would create an S3 event notification that triggers a Lambda function whenever we have a PUT object operation in the S3 bucket. The Lambda function in turn would execute custom code to inserts records into DynamoDB
+
+## Your company manages MySQL databases on EC2 instances to have full control. Applications on other EC2 instances managed by an ASG make requests to these databases to get information that displays data on dashboards viewed on mobile phones, tablets, and web browsers. Your manager would like to scale your Auto Scaling group based on the number of requests per minute. How can you achieve this?
+
+**You create a CloudWatch custom metric and build an alarm to scale your ASG**
+
+Here we need to scale on the metric "number of requests per minute", which is a custom metric we need to create, as it's not readily available in CloudWatch.
+
+Metrics produced by AWS services are standard resolution by default. When you publish a custom metric, you can define it as either standard resolution or high resolution. When you publish a high-resolution metric, CloudWatch stores it with a resolution of 1 second, and you can read and retrieve it with a period of 1 second, 5 seconds, 10 seconds, 30 seconds, or any multiple of 60 seconds.
