@@ -90,8 +90,9 @@ When you create a target group, you specify its target type, which determines th
 When the target type is IP, you can specify IP addresses from specific CIDR blocks only. You can't specify publicly routable IP addresses.
 
 
+### You are designing a high-performance application that requires millions of connections. You have several EC2 instances running Apache2 web servers and the application will require capturing the user’s source IP address and source port without the use of X-Forwarded-For. Which of the following options will meet your needs?
 
+**Network Load Balancer**
 
-
-
+A Network Load Balancer functions at the fourth layer of the Open Systems Interconnection (OSI) model. It can handle millions of requests per second. After the load balancer receives a connection request, it selects a target from the target group for the default rule. It attempts to open a TCP connection to the selected target on the port specified in the listener configuration. **Incoming connections remain unmodified, so application software need not support X-Forwarded-For**.
 
