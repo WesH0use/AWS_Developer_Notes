@@ -96,3 +96,11 @@ When the target type is IP, you can specify IP addresses from specific CIDR bloc
 
 A Network Load Balancer functions at the fourth layer of the Open Systems Interconnection (OSI) model. It can handle millions of requests per second. After the load balancer receives a connection request, it selects a target from the target group for the default rule. It attempts to open a TCP connection to the selected target on the port specified in the listener configuration. **Incoming connections remain unmodified, so application software need not support X-Forwarded-For**.
 
+### You have uploaded a zip file to AWS Lambda that contains code files written in Node.Js. When your function is executed you receive the following output, 'Error: Memory Size: 10,240 MB Max Memory Used'. Which of the following explains the problem?
+
+**Your Lambda function ran out of RAM**
+
+AWS Lambda lets you run code without provisioning or managing servers. You pay only for the compute time you consume.
+
+**The maximum amount of memory available to the Lambda function at runtime is 10,240 MB**. Your Lambda function was deployed with 10,240 MB of RAM, but it seems your code requested or used more than that, so the Lambda function failed.
+
