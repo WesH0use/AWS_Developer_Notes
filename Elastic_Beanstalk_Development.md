@@ -27,3 +27,12 @@ Amazon ElastiCache allows you to run in-memory data stores in the AWS cloud. Ama
 Amazon ElastiCache can be used to significantly improve latency and throughput for many read-heavy application workloads (such as social networking, gaming, media sharing, and Q&A portals) or compute-intensive workloads (such as a recommendation engine) by allowing you to store the objects that are often read in the cache.
   
 ![image](https://user-images.githubusercontent.com/44325167/131362722-38decc12-89dc-4800-8a05-59c39d94e516.png)
+
+  
+### A .NET developer team works with many ASP.NET web applications that use EC2 instances to host them on IIS. The deployment process needs to be configured so that multiple versions of the application can run in AWS Elastic Beanstalk. One version would be used for development, testing, and another version for load testing. Which of the following methods do you recommend?
+  
+**Define a dev environment with a single instance and a 'load test' environment that has settings close to production environment**
+
+AWS Elastic Beanstalk makes it easy to create new environments for your application. You can create and manage separate environments for development, testing, and production use, and you can deploy any version of your application to any environment. Environments can be long-running or temporary. When you terminate an environment, you can save its configuration to recreate it later.
+
+It is common practice to have many environments for the same application. You can deploy multiple environments when you need to run multiple versions of an application. So for the given use-case, you can set up 'dev' and 'load test' environment.
