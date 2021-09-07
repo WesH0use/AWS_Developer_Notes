@@ -130,3 +130,9 @@ To decrypt data outside of AWS KMS:
 Use the Decrypt operation to decrypt the encrypted data key. The operation returns a plaintext copy of the data key.
 
 Use the plaintext data key to decrypt data outside of AWS KMS, then erase the plaintext data key from memory.
+
+## You are assigned as the new project lead for a web application that processes orders for customers. You want to integrate event-driven processing anytime data is modified or deleted and use a serverless approach using AWS Lambda for processing stream events. Which of the following databases should you choose from?
+
+A **DynamoDB** stream is an ordered flow of information about changes to items in a DynamoDB table. When you enable a stream on a table, DynamoDB Streams captures a time-ordered sequence of item-level modifications in any DynamoDB table, and stores this information in a log for up to 24 hours. Applications can access this log and view the data items as they appeared before and after they were modified, in near real-time.
+
+Whenever an application creates, updates, or deletes items in the table, DynamoDB Streams writes a stream record with the primary key attributes of the items that were modified.
