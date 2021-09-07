@@ -49,3 +49,13 @@ S3 Object Ownership has two settings:
 **Use CloudWatch integration feature with S3**
 
 You can export log data from your CloudWatch log groups to an Amazon S3 bucket and use this data in custom processing and analysis, or to load onto other systems.
+
+## A developer is migrating an on-premises application to AWS Cloud. The application currently processes user uploads and uploads them to a local directory on the server. All such file uploads must be saved and then made available to all instances in an Auto Scaling group. As a Developer Associate, which of the following options would you recommend for this use-case?
+
+**Use Amazon S3 and make code changes in the application so all uploads are put on S3**
+
+Amazon S3 is an object storage built to store and retrieve any amount of data from anywhere on the Internet. It’s a simple storage service that offers an extremely durable, highly available, and infinitely scalable data storage infrastructure at very low costs.
+
+Amazon S3 provides a simple web service interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. Using this web service, you can easily build applications that make use of Internet storage.
+
+You can use S3 PutObject API from the application to upload the objects in a single bucket, which is then accessible from all instances.
