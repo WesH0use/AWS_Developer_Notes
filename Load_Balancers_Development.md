@@ -59,3 +59,10 @@ This is because each load balancer node can route its 50% of the client traffic 
 ## 15
 
 ## 20
+
+
+### You have a popular three-tier web application that is used by users throughout the globe receiving thousands of incoming requests daily. You have AWS Route 53 policies to automatically distribute weighted traffic to the API resources located at URL api.global.com. What is an alternative way of distributing traffic to a web application?
+
+**_ELB_**
+
+Elastic Load Balancing automatically distributes incoming application traffic across multiple targets, such as Amazon EC2 instances, containers, IP addresses, and Lambda functions. Route 53 failover policy is similar to an ELB in that when using failover routing, it lets you route traffic to a resource when the resource is healthy or to a different resource when the first resource is unhealthy.
