@@ -31,6 +31,22 @@ _Amazon SQS provides short polling and long polling to receive messages from a q
 
 _Long polling makes it inexpensive to retrieve messages from your Amazon SQS queue as soon as the messages are available_. Long polling helps reduce the cost of using Amazon SQS by eliminating the number of empty responses (when there are no messages available for a ReceiveMessage request) and false empty responses (when messages are available but aren't included in a response). When the wait time for the ReceiveMessage API action is greater than 0, long polling is in effect. The maximum long polling wait time is 20 seconds.
 
+### An Amazon Simple Queue Service (SQS) has to be configured between two AWS accounts for shared access to the queue. AWS account A has the SQS queue in its account and AWS account B has to be given access to this queue. Which of the following options need to be combined to allow this cross-account access? (Select three)
+
+**The account A administrator creates an IAM role and attaches a permissions policy**
+
+**The account A administrator attaches a trust policy to the role that identifies account B as the principal who can assume the role**
+
+**The account B administrator delegates the permission to assume the role to any users in account B**
+
+To grant cross-account permissions, you need to attach an identity-based permissions policy to an IAM role. For example, the AWS account A administrator can create a role to grant cross-account permissions to AWS account B as follows:
+
+The account A administrator creates an IAM role and attaches a permissions policy—that grants permissions on resources in account A—to the role.
+
+The account A administrator attaches a trust policy to the role that identifies account B as the principal who can assume the role.
+
+The account B administrator delegates the permission to assume the role to any users in account B. This allows users in account B to create or access queues in account A.
+
 
 # Users
 ### A HealthCare mobile app uses proprietary Machine Learning algorithms to provide early diagnosis using patient health metrics. To protect this sensitive data, the development team wants to transition to a scalable user management system with log-in/sign-up functionality that also supports Multi-Factor Authentication (MFA) Which of the following options can be used to implement a solution with the LEAST amount of development effort? (Select two)
@@ -48,11 +64,19 @@ Cognito user pools provide support for sign-up and sign-in services as well as s
 
 # S3
 
-A telecom service provider stores its critical customer data on Amazon Simple Storage Service (Amazon S3). Which of the following options can be used to control access to data stored on Amazon S3?
+### A telecom service provider stores its critical customer data on Amazon Simple Storage Service (Amazon S3). Which of the following options can be used to control access to data stored on Amazon S3?
 
 **Bucket policies, Identity and Access Management (IAM) policies**
 
 **Query String Authentication, Access Control Lists (ACLs)**
+
+### A company developed an app-based service for citizens to book transportation rides in the local community. The platform is running on AWS EC2 instances and uses Amazon Relational Database Service (RDS) for storing transportation data. A new feature has been requested where receipts would be emailed to customers with PDF attachments retrieved from Amazon Simple Storage Service (S3). Which of the following options will provide EC2 instances with the right permissions to upload files to Amazon S3 and generate S3 Signed URL?
+
+**Create an IAM Role for EC2**
+
+IAM roles have been incorporated so that your applications can securely make API requests from your instances, without requiring you to manage the security credentials that the applications use. Instead of creating and distributing your AWS credentials, you can delegate permission to make API requests using IAM roles.
+
+Amazon EC2 uses an instance profile as a container for an IAM role. When you create an IAM role using the IAM console, the console creates an instance profile automatically and gives it the same name as the role to which it corresponds.
 
 Customers may use four mechanisms for controlling access to Amazon S3 resources: <br>_Identity and Access Management (IAM) policies <br> Bucket policies <br> Access Control Lists (ACLs) <br> Query String Authentication._
 
@@ -63,6 +87,16 @@ With bucket policies, customers can define rules which apply broadly across all 
 With ACLs, customers can grant specific permissions (i.e. READ, WRITE, FULL_CONTROL) to specific users for an individual bucket or object.
 
 With Query String Authentication, customers can create a URL to an Amazon S3 object which is only valid for a limited time. Using query parameters to authenticate requests is useful when you want to express a request entirely in a URL. This method is also referred as presigning a URL.
+
+### You are storing your video files in a separate S3 bucket than your main static website in an S3 bucket. When accessing the video URLs directly the users can view the videos on the browser, but they can't play the videos while visiting the main website. What is the root cause of this problem?
+
+**Enable CORS**
+
+Cross-origin resource sharing (CORS) defines a way for client web applications that are loaded in one domain to interact with resources in a different domain. With CORS support, you can build rich client-side web applications with Amazon S3 and selectively allow cross-origin access to your Amazon S3 resources.
+
+To configure your bucket to allow cross-origin requests, you create a CORS configuration, which is an XML document with rules that identify the origins that you will allow to access your bucket, the operations (HTTP methods) that will support for each origin, and other operation-specific information.
+
+For the given use-case, you would create a <CORSRule> in <CORSConfiguration> for bucket B to allow access from the S3 website origin hosted on bucket A.
 
 ## A digital marketing company has its website hosted on an Amazon S3 bucket A. The development team notices that the static JavaScript files, that are hosted on another S3 bucket B, are not loading correctly on the website. Which of the following solutions can be used to address this issue?
 
@@ -109,6 +143,37 @@ Incorrect options:
 
 **Use of Bucket Policies** - A bucket policy is a resource-based AWS Identity and Access Management (IAM) policy. You add a bucket policy to a bucket to grant other AWS accounts or IAM users access permissions for the bucket and the objects in it. Object permissions apply only to the objects that the bucket owner creates.
  
+### You have a web application hosted on EC2 that makes GET and PUT requests for objects stored in Amazon Simple Storage Service (S3) using the SDK for PHP. As the security team completed the final review of your application for vulnerabilities, they noticed that your application uses hardcoded IAM access key and secret access key to gain access to AWS services. They recommend you leverage a more secure setup, which should use temporary credentials if possible. Which of the following options can be used to address the given use-case?
+ 
+**Use an IAM Instance Role**
+
+An instance profile is a container for an IAM role that you can use to pass role information to an EC2 instance when the instance starts. The AWS SDK will use the EC2 metadata service to obtain temporary credentials thanks to the IAM instance role. This is the most secure and common setup when deploying any kind of applications onto an EC2 instance.
+ 
+ 
+### A cybersecurity company is publishing critical log data to a log group in Amazon CloudWatch Logs, which was created 3 months ago. The company must encrypt the log data using an AWS KMS customer master key (CMK), so any future data can be encrypted to meet the company’s security guidelines. How can the company address this use-case?
+ 
+ **Use the AWS CLI associate-kms-key command and specify the KMS key ARN**
+
+Log group data is always encrypted in CloudWatch Logs. You can optionally use AWS AWS Key Management Service for this encryption. If you do, the encryption is done using an AWS KMS (AWS KMS) customer master key (CMK). Encryption using AWS KMS is enabled at the log group level, by associating a CMK with a log group, either when you create the log group or after it exists.
+
+After you associate a CMK with a log group, all newly ingested data for the log group is encrypted using the CMK. This data is stored in an encrypted format throughout its retention period. CloudWatch Logs decrypts this data whenever it is requested. CloudWatch Logs must have permissions for the CMK whenever encrypted data is requested.
+
+To associate the CMK with an existing log group, you can use the _associate-kms-key_ command.
+ 
+### A development team is storing sensitive customer data in S3 that will require encryption at rest. The encryption keys must be rotated at least annually. What is the easiest way to implement a solution for this requirement?
+ 
+Use AWS KMS with automatic key rotation - Server-side encryption is the encryption of data at its destination by the application or service that receives it. Amazon S3 encrypts your data at the object level as it writes it to disks in its data centers and decrypts it for you when you access it. You have three mutually exclusive options, depending on how you choose to manage the encryption keys: Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3), Server-Side Encryption with Customer Master Keys (CMKs) Stored in AWS Key Management Service (SSE-KMS), Server-Side Encryption with Customer-Provided Keys (SSE-C).
+
+When you use server-side encryption with AWS KMS (SSE-KMS), you can use the default AWS managed CMK, or you can specify a customer managed CMK that you have already created. If you don't specify a customer managed CMK, Amazon S3 automatically creates an AWS managed CMK in your AWS account the first time that you add an object encrypted with SSE-KMS to a bucket. By default, Amazon S3 uses this CMK for SSE-KMS.
+
+You can choose to have AWS KMS automatically rotate CMKs every year, provided that those keys were generated within AWS KMS HSMs.
+
+ ### An organization recently began using AWS CodeCommit for its source control service. A compliance security team visiting the organization was auditing the software development process and noticed developers making many git push commands within their development machines. The compliance team requires that encryption be used for this activity. How can the organization ensure source code is encrypted in transit and at rest?
+ 
+** Repositories are automatically encrypted at rest**
+
+Data in AWS CodeCommit repositories is encrypted in transit and at rest. When data is pushed into an AWS CodeCommit repository (for example, by calling git push), AWS CodeCommit encrypts the received data as it is stored in the repository.
+
 
 # SHH Keys 
 
@@ -368,11 +433,103 @@ All volumes created from those snapshots
 **EBS volumes support both in-flight encryption and encryption at rest using KMS** - This is a correct statement. Encryption operations occur on the servers that host EC2 instances, ensuring the security of both data-at-rest and data-in-transit between an instance and its attached EBS storage.
  
  
+# Codecommit
+ 
+### A company would like to migrate the existing application code from a GitHub repository to AWS CodeCommit. As an AWS Certified Developer Associate, which of the following would you recommend for migrating the cloned repository to CodeCommit over HTTPS?
+
+**Use Git credentials generated from IAM** - CodeCommit repositories are Git-based and support the basic functionalities of Git such as Git credentials. AWS recommends that you use an IAM user when working with CodeCommit. You can access CodeCommit with other identity types, but the other identity types are subject to limitations.
+
+The simplest way to set up connections to AWS CodeCommit repositories is to configure Git credentials for CodeCommit in the IAM console, and then use those credentials for HTTPS connections. You can also use these same credentials with any third-party tool or individual development environment (IDE) that supports HTTPS authentication using a static user name and password.
+
+An IAM user is an identity within your Amazon Web Services account that has specific custom permissions. For example, an IAM user can have permissions to create and manage Git credentials for accessing CodeCommit repositories. This is the recommended user type for working with CodeCommit. You can use an IAM user name and password to sign in to secure AWS webpages like the AWS Management Console, AWS Discussion Forums, or the AWS Support Center.
 
 
+### An IT company has a web application running on Amazon EC2 instances that needs read-only access to an Amazon DynamoDB table. As a Developer Associate, what is the best-practice solution you would recommend to accomplish this task?
+ 
+**Create an IAM role with an AmazonDynamoDBReadOnlyAccess policy and apply it to the EC2 instance profile**
 
+As an AWS security best practice, you should not create an IAM user and pass the user's credentials to the application or embed the credentials in the application. Instead, create an IAM role that you attach to the EC2 instance to give temporary security credentials to applications running on the instance. When an application uses these credentials in AWS, it can perform all of the operations that are allowed by the policies attached to the role.
 
+So for the given use-case, you should create an IAM role with an AmazonDynamoDBReadOnlyAccess policy and apply it to the EC2 instance profile.
+ 
+### You have a popular web application that accesses data stored in an Amazon Simple Storage Service (S3) bucket. Developers use the SDK to maintain the application and add new features. Security compliance requests that all new objects uploaded to S3 be encrypted using SSE-S3 at the time of upload. Which of the following headers must the developers add to their request?
 
+'_x-amz-server-side-encryption': 'AES256'_
 
+Server-side encryption protects data at rest. Amazon S3 encrypts each object with a unique key. As an additional safeguard, it encrypts the key itself with a master key that it rotates regularly. Amazon S3 server-side encryption uses one of the strongest block ciphers available to encrypt your data, 256-bit Advanced Encryption Standard (AES-256).
+ 
+### Your development team uses the AWS SDK for Java on a web application that uploads files to several Amazon Simple Storage Service (S3) buckets using the SSE-KMS encryption mechanism. Developers are reporting that they are receiving permission errors when trying to push their objects over HTTP. Which of the following headers should they include in their request?
 
+'x-amz-server-side-encryption': 'aws:kms'
 
+Server-side encryption is the encryption of data at its destination by the application or service that receives it. AWS Key Management Service (AWS KMS) is a service that combines secure, highly available hardware and software to provide a key management system scaled for the cloud. Amazon S3 uses AWS KMS customer master keys (CMKs) to encrypt your Amazon S3 objects. AWS KMS encrypts only the object data. Any object metadata is not encrypted.
+
+If the request does not include the x-amz-server-side-encryption header, then the request is denied.
+
+### A development team had enabled and configured CloudTrail for all the Amazon S3 buckets used in a project. The project manager owns all the S3 buckets used in the project. However, the manager noticed that he did not receive any object-level API access logs when the data was read by another AWS account. What could be the reason for this behavior/error?
+ 
+**The bucket owner also needs to be object owner to get the object access logs**
+
+If the bucket owner is also the object owner, the bucket owner gets the object access logs. Otherwise, the bucket owner must get permissions, through the object ACL, for the same object API to get the same object-access API logs.
+ 
+### As part of internal regulations, you must ensure that all communications to Amazon S3 are encrypted. For which of the following encryption mechanisms will a request get rejected if the connection is not using HTTPS?
+ 
+**SSE-C**
+
+Server-side encryption is about protecting data at rest. Server-side encryption encrypts only the object data, not object metadata. Using server-side encryption with customer-provided encryption keys (SSE-C) allows you to set your encryption keys.
+
+When you upload an object, Amazon S3 uses the encryption key you provide to apply AES-256 encryption to your data and removes the encryption key from memory. When you retrieve an object, you must provide the same encryption key as part of your request. Amazon S3 first verifies that the encryption key you provided matches and then decrypts the object before returning the object data to you.
+
+Amazon S3 will reject any requests made over HTTP when using SSE-C. For security considerations, AWS recommends that you consider any key you send erroneously using HTTP to be compromised.
+
+### You are a manager for a tech company that has just hired a team of developers to work on the company's AWS infrastructure. All the developers are reporting to you that when using the AWS CLI to execute commands it fails with the following exception: You are not authorized to perform this operation. Encoded authorization failure message: 6h34GtpmGjJJUm946eDVBfzWQJk6z5GePbbGDs9Z2T8xZj9EZtEduSnTbmrR7pMqpJrVYJCew2m8YBZQf4HRWEtrpncANrZMsnzk. Which of the following actions will help developers decode the message?
+ 
+**AWS STS decode-authorization-message**
+
+Use decode-authorization-message to decode additional information about the authorization status of a request from an encoded message returned in response to an AWS request. If a user is not authorized to perform an action that was requested, the request returns a Client.UnauthorizedOperation response (an HTTP 403 response). The message is encoded because the details of the authorization status can constitute privileged information that the user who requested the operation should not see. To decode an authorization status message, a user must be granted permissions via an IAM policy to request the DecodeAuthorizationMessage (sts:DecodeAuthorizationMessage) action.
+
+### Your company stores confidential data on an Amazon Simple Storage Service (S3) bucket. New security compliance guidelines require that files be stored with server-side encryption. The encryption used must be Advanced Encryption Standard (AES-256) and the company does not want to manage S3 encryption keys. Which of the following options should you use?
+ 
+**SSE-S3**
+
+Using Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3), each object is encrypted with a unique key employing strong multi-factor encryption. As an additional safeguard, it encrypts the key itself with a master key that it regularly rotates. Amazon S3 server-side encryption uses one of the strongest block ciphers available, 256-bit Advanced Encryption Standard (AES-256), to encrypt your data.
+ 
+
+### You are planning to build a fleet of EBS-optimized EC2 instances to handle the load of your new application. Due to security compliance, your organization wants any secret strings used in the application to be encrypted to prevent exposing values as clear text. The solution requires that decryption events be audited and API calls to be simple. How can this be achieved? (select two)
+ 
+**Store the secret as SecureString in SSM Parameter Store**
+
+With AWS Systems Manager Parameter Store, you can create SecureString parameters, which are parameters that have a plaintext parameter name and an encrypted parameter value. Parameter Store uses AWS KMS to encrypt and decrypt the parameter values of Secure String parameters. Also, if you are using customer-managed CMKs, you can use IAM policies and key policies to manage to encrypt and decrypt permissions. To retrieve the decrypted value you only need to do one API call.
+ 
+**Audit using CloudTrail**
+
+AWS CloudTrail is a service that enables governance, compliance, operational auditing, and risk auditing of your AWS account. With CloudTrail, you can log, continuously monitor, and retain account activity related to actions across your AWS infrastructure. CloudTrail provides an event history of your AWS account activity, including actions taken through the AWS Management Console, AWS SDKs, command-line tools, and other AWS services.
+
+CloudTrail will allow you to see all API calls made to SSM and KMS.
+ 
+ 
+### A media company is building an application that needs to store video files in Amazon S3. Management requires that the files be encrypted before they are sent to Amazon S3 for storage. The encryption keys need to be managed by an in-house security team but the key itself is stored on AWS. Which solution should the company use to meet these requirements?
+ 
+ **Use client-side encryption with an AWS KMS managed customer master key (CMK)**
+
+You have the following options for protecting data at rest in Amazon S3:
+
+Server-Side Encryption – Request Amazon S3 to encrypt your object before saving it on disks in its data centers and then decrypt it when you download the objects.
+
+Client-Side Encryption – Encrypt data client-side and upload the encrypted data to Amazon S3. In this case, you manage the encryption process, the encryption keys, and related tools.
+
+As the company wants to make sure that the files are encrypted before they are sent to Amazon S3, therefore you should use client-side encryption.
+
+To enable client-side encryption, you have the following options:
+
+Use a customer master key (CMK) stored in AWS Key Management Service (AWS KMS).
+
+Use a master key you store within your application.
+
+As the use-case mentions that the encryption keys need to be managed by an in-house security team but the key itself should be stored on AWS, therefore you must use the customer master key (CMK) stored in AWS Key Management Service (AWS KMS).
+ 
+### Your company leverages Amazon CloudFront to provide content via the internet to customers with low latency. Aside from latency, security is another concern and you are looking for help in enforcing end-to-end connections using HTTPS so that content is protected. Which of the following options is available for HTTPS in AWS CloudFront?
+ 
+**Between clients and CloudFront as well as between CloudFront and backend**
+
+For web distributions, you can configure CloudFront to require that viewers use HTTPS to request your objects, so connections are encrypted when CloudFront communicates with viewers.
