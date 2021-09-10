@@ -211,3 +211,92 @@ When you deploy your services using Amazon Elastic Container Service (Amazon ECS
 This type of integration lets API Gateway return a response without sending the request further to the backend. This is useful for API testing because it can be used to test the integration setup without incurring charges for using the backend and to enable collaborative development of an API.
 
 In collaborative development, a team can isolate their development effort by setting up simulations of API components owned by other teams by using the MOCK integrations. It is also used to return CORS-related headers to ensure that the API method permits CORS access. In fact, the API Gateway console integrates the OPTIONS method to support CORS with a mock integration.
+
+### Your AWS CodeDeploy deployment to T2 instances succeed. The new application revision makes API calls to Amazon S3 however the application is not working as expected due to authorization exceptions and you were assigned to troubleshoot the issue. Which of the following should you do?
+
+**Fix the IAM permissions for the EC2 instance role**
+
+You should use an IAM role to manage temporary credentials for applications that run on an EC2 instance. When you use a role, you don't have to distribute long-term credentials (such as a user name and password or access keys) to an EC2 instance. Instead, the role supplies temporary permissions that applications can use when they make calls to other AWS resources. In this case, make sure your role has access to the S3 bucket.
+
+
+### You have a Java-based application running on EC2 instances loaded with AWS CodeDeploy agents. You are considering different options for deployment, one is the flexibility that allows for incremental deployment of your new application versions and replaces existing versions in the EC2 instances. The other option is a strategy in which an Auto Scaling group is used to perform a deployment. Which of the following options will allow you to deploy in this manner? (Select two)
+
+**In-place Deployment**
+
+The application on each instance in the deployment group is stopped, the latest application revision is installed, and the new version of the application is started and validated. You can use a load balancer so that each instance is deregistered during its deployment and then restored to service after the deployment is complete.
+
+**Blue/green Deployment**
+
+With a blue/green deployment, you provision a new set of instances on which CodeDeploy installs the latest version of your application. CodeDeploy then re-routes load balancer traffic from an existing set of instances running the previous version of your application to the new set of instances running the latest version. After traffic is re-routed to the new instances, the existing instances can be terminated.
+
+### An IT company is using AWS CloudFormation to manage its IT infrastructure. It has created a template to provision a stack with a VPC and a subnet. The output value of this subnet has to be used in another stack. As a Developer Associate, which of the following options would you suggest to provide this information to another stack?
+
+**Use 'Export' field in the Output section of the stack's template**
+
+To share information between stacks, export a stack's output values. Other stacks that are in the same AWS account and region can import the exported values.
+
+To export a stack's output value, use the Export field in the Output section of the stack's template. To import those values, use the Fn::ImportValue function in the template for the other stacks.
+
+
+### An e-commerce company has implemented AWS CodeDeploy as part of its AWS cloud CI/CD strategy. The company has configured automatic rollbacks while deploying a new version of its flagship application to Amazon EC2. What occurs if the deployment of the new version fails?
+
+**A new deployment of the last known working version of the application is deployed with a new deployment ID**
+
+AWS CodeDeploy is a service that automates code deployments to any instance, including Amazon EC2 instances and instances running on-premises. AWS CodeDeploy makes it easier for you to rapidly release new features, helps you avoid downtime during deployment, and handles the complexity of updating your applications.
+
+CodeDeploy rolls back deployments by redeploying a previously deployed revision of an application as a new deployment. These rolled-back deployments are technically new deployments, with new deployment IDs, rather than restored versions of a previous deployment.
+
+To roll back an application to a previous revision, you just need to deploy that revision. AWS CodeDeploy keeps track of the files that were copied for the current revision and removes them before starting a new deployment, so there is no difference between redeploy and rollback. However, you need to make sure that the previous revisions are available for rollback.
+
+### A communication platform serves millions of customers and deploys features in a production environment on AWS via CodeDeploy. You are reviewing scripts for the deployment process located in the AppSec file. Which of the following options lists the correct order of lifecycle events?
+
+**DownloadBundle => BeforeInstall => ApplicationStart => ValidateService**
+
+AWS CodeDeploy is a fully managed deployment service that automates software deployments to a variety of compute services such as Amazon EC2, AWS Fargate, AWS Lambda, and your on-premises servers. AWS CodeDeploy makes it easier for you to rapidly release new features, helps you avoid downtime during application deployment, and handles the complexity of updating your applications.
+
+You can specify one or more scripts to run in a hook. Each hook for a lifecycle event is specified with a string on a separate line.
+
+
+### Your company is in the process of building a DevOps culture and is moving all of its on-premise resources to the cloud using serverless architectures and automated deployments. You have created a CloudFormation template in YAML that uses an AWS Lambda function to pull HTML files from GitHub and place them into an Amazon Simple Storage Service (S3) bucket that you specify. Which of the following AWS CLI commands can you use to upload AWS Lambda functions and AWS CloudFormation templates to AWS?
+
+**cloudformation package and cloudformation deploy**
+
+AWS CloudFormation gives developers and businesses an easy way to create a collection of related AWS and third-party resources and provision them in an orderly and predictable fashion.
+
+### A development team is considering Amazon ElastiCache for Redis as its in-memory caching solution for its relational database. Which of the following options are correct while configuring ElastiCache? (Select two)
+
+**All the nodes in a Redis cluster must reside in the same region**
+
+All the nodes in a Redis cluster (cluster mode enabled or cluster mode disabled) must reside in the same region.
+
+**While using Redis with cluster mode enabled, you cannot manually promote any of the replica nodes to primary**
+
+While using Redis with cluster mode enabled, there are some limitations:
+
+You cannot manually promote any of the replica nodes to primary.
+
+Multi-AZ is required.
+
+You can only change the structure of a cluster, the node type, and the number of nodes by restoring from a backup.
+
+
+### You have been hired at a company that needs an experienced developer to help with a continuous integration/continuous delivery (CI/CD) workflow on AWS. You configure the company’s workflow to run an AWS CodePipeline pipeline whenever the application’s source code changes in a repository hosted in AWS Code Commit and compiles source code with AWS Code Build. You are configuring ProjectArtifacts in your build stage. Which of the following should you do?
+
+**Give AWS CodeBuild permissions to upload the build output to your Amazon S3 bucket**
+
+If you choose ProjectArtifacts and your value type is S3 then the build project stores build output in Amazon Simple Storage Service (Amazon S3). For that, you will need to give AWS CodeBuild permissions to upload.
+
+
+### A data analytics company with its IT infrastructure on the AWS Cloud wants to build and deploy its flagship application as soon as there are any changes to the source code. As a Developer Associate, which of the following options would you suggest to trigger the deployment? (Select two)
+
+**Keep the source code in an AWS CodeCommit repository and start AWS CodePipeline whenever a change is pushed to the CodeCommit repository**
+
+**Keep the source code in an Amazon S3 bucket and start AWS CodePipeline whenever a file in the S3 bucket is updated**
+
+AWS CodePipeline is a fully managed continuous delivery service that helps you automate your release pipelines for fast and reliable application and infrastructure updates. CodePipeline automates the build, test, and deploy phases of your release process every time there is a code change, based on the release model you define.
+
+Using change detection methods that you specify, you can make your pipeline start when a change is made to a repository. You can also make your pipeline start on a schedule.
+
+When you use the console to create a pipeline that has a CodeCommit source repository or S3 source bucket, CodePipeline creates an Amazon CloudWatch Events rule that starts your pipeline when the source changes. This is the recommended change detection method.
+
+If you use the AWS CLI to create the pipeline, the change detection method defaults to starting the pipeline by periodically checking the source (CodeCommit, Amazon S3, and GitHub source providers only). AWS recommends that you disable periodic checks and create the rule manually.
