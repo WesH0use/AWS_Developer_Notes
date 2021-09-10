@@ -232,3 +232,64 @@ EC2 Instance Role - The X-Ray daemon uses the AWS SDK to upload trace data to X-
 CloudTrail - With CloudTrail, you can log, continuously monitor, and retain account activity related to actions across your AWS infrastructure. You can use AWS CloudTrail to answer questions such as - “Who made an API call to modify this resource?”. CloudTrail provides event history of your AWS account activity thereby enabling governance, compliance, operational auditing, and risk auditing of your AWS account. You can check CloudTrail to see if any API call is being denied on X-Ray.
 
 
+## DynamoDB
+  
+### A firm uses AWS DynamoDB to store information about people’s favorite sports teams and allow the information to be searchable from their home page. There is a daily requirement that all 10 million records in the table should be deleted then re-loaded at 2:00 AM each night. Which option is an efficient way to delete with minimal costs?
+  
+**Delete then re-create the table**
+
+The DeleteTable operation deletes a table and all of its items. After a DeleteTable request, the specified table is in the DELETING state until DynamoDB completes the deletion.
+
+  
+## CloudWatch
+
+### A voting system hosted on-premise was recently migrated to AWS to lower cost, gain scalability, and to better serve thousands of concurrent users. When one of the AWS resource state changes, it generates an event and will need to trigger AWS Lambda. The AWS resource whose state changes and AWS Lambda does not have direct integration. Which of the following methods can be used to trigger AWS Lambda?
+  
+**CloudWatch Events Rules with AWS Lambda**
+
+You can create a Lambda function and direct CloudWatch Events to execute it on a regular schedule. You can specify a fixed rate (for example, execute a Lambda function every hour or 15 minutes), or you can specify a Cron expression.
+
+![image](https://user-images.githubusercontent.com/44325167/132840725-161e21c5-c8d3-4744-b5df-4e2dcb8fa7d2.png)
+  
+### An organization uses Alexa as its intelligent assistant to improve productivity throughout the organization. A group of developers manages custom Alexa Skills written in Node.Js to control conference-room equipment settings and start meetings using voice activation. The manager has requested developers that all functions code should be monitored for error rates with the possibility of creating alarms on top of them. Which of the following options should be chosen? (select two)
+  
+**CloudWatch Metrics**
+
+Amazon CloudWatch monitors your Amazon Web Services (AWS) resources and the applications you run on AWS in real-time. You can use CloudWatch to collect and track metrics, which are variables you can measure for your resources and applications. Metric data is kept for 15 months, enabling you to view both up-to-the-minute data and historical data.
+
+CloudWatch retains metric data as follows:
+
+Data points with a period of less than 60 seconds are available for 3 hours. These data points are high-resolution custom metrics. Data points with a period of 60 seconds (1 minute) are available for 15 days Data points with a period of 300 seconds (5 minute) are available for 63 days Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months)
+
+**CloudWatch Alarms**
+
+You can use an alarm to automatically initiate actions on your behalf. An alarm watches a single metric over a specified time, and performs one or more specified actions, based on the value of the metric relative to a threshold over time. The action is a notification sent to an Amazon SNS topic or an Auto Scaling policy. You can also add alarms to dashboards.
+
+CloudWatch alarms send notifications or automatically make changes to the resources you are monitoring based on rules that you define. Alarms work together with CloudWatch Metrics.
+
+A metric alarm has the following possible states:
+
+OK – The metric or expression is within the defined threshold.
+
+ALARM – The metric or expression is outside of the defined threshold.
+
+INSUFFICIENT_DATA – The alarm has just started, the metric is not available, or not enough data is available for the metric to determine the alarm state.
+  
+### You are revising options that would be best for monitoring a few EC2 instances you currently manage. Amazon CloudWatch has metrics available to monitor your EC2 instances for CPU load, I/O, and network I/O. Your budget does not allow for spending on monitoring so using the default monitoring available is your preferred choice.With default monitoring, at what interval will these metrics be collected?
+  
+**5 minutes**
+
+By default, your instance is enabled for basic monitoring and Amazon EC2 sends metric data to CloudWatch in 5-minute periods. You can optionally enable detailed monitoring. After you enable detailed monitoring, the Amazon EC2 console displays monitoring graphs with a 1-minute period for the instance.
+
+The following describes the data interval and charge for basic and detailed monitoring for instances.
+
+Basic monitoring Data is available automatically in 5-minute periods at no charge.
+
+Detailed monitoring Data is available in 1-minute periods for an additional charge.
+
+### Your company manages hundreds of EC2 instances running on Linux OS. The instances are configured in several Availability Zones in the eu-west-3 region. Your manager has requested to collect system memory metrics on all EC2 instances using a script. Which of the following solutions will help you collect this data?
+  
+ "**Use a cron job on the instances that pushes the EC2 RAM statistics as a Custom metric into CloudWatch**"
+
+The Amazon CloudWatch Monitoring Scripts for Amazon Elastic Compute Cloud (Amazon EC2) Linux-based instances demonstrate how to produce and consume Amazon CloudWatch custom metrics. These Perl scripts comprise a fully functional example that reports memory, swap, and disk space utilization metrics for a Linux instance. You can set a cron schedule for metrics reported to CloudWatch and report memory utilization to CloudWatch every x minutes.
+
