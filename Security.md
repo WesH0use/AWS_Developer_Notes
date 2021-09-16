@@ -533,3 +533,219 @@ As the use-case mentions that the encryption keys need to be managed by an in-ho
 **Between clients and CloudFront as well as between CloudFront and backend**
 
 For web distributions, you can configure CloudFront to require that viewers use HTTPS to request your objects, so connections are encrypted when CloudFront communicates with viewers.
+____
+ 
+### To improve their information security management system (ISMS), a company recently released a new policy which requires all database credentials to be encrypted and be automatically rotated to avoid unauthorized access. Which of the following is the MOST appropriate solution to secure the credentials?
+ 
+**AWS Secrets Manager** is an AWS service that makes it easier for you to manage secrets. Secrets can be database credentials, passwords, third-party API keys, and even arbitrary text. You can store and control access to these secrets centrally by using the Secrets Manager console, the Secrets Manager command line interface (CLI), or the Secrets Manager API and SDKs.
+
+In the past, when you created a custom application that retrieves information from a database, you typically had to embed the credentials (the secret) for accessing the database directly in the application. When it came time to rotate the credentials, you had to do much more than just create new credentials. You had to invest time to update the application to use the new credentials. Then you had to distribute the updated application. If you had multiple applications that shared credentials and you missed updating one of them, the application would break. Because of this risk, many customers have chosen not to regularly rotate their credentials, which effectively substitutes one risk for another.
+ 
+Secrets Manager enables you to replace hardcoded credentials in your code (including passwords), with an API call to Secrets Manager to retrieve the secret programmatically. This helps ensure that the secret can't be compromised by someone examining your code, because the secret simply isn't there. Also, you can configure Secrets Manager to automatically rotate the secret for you according to a schedule that you specify. This enables you to replace long-term secrets with short-term ones, which helps to significantly reduce the risk of compromise.
+ 
+### You are building a distributed system using KMS where you need to encrypt data at a later time. An API must be called that returns only the encrypted copy of the data key which you will use for encryption. After an hour, you will decrypt the data key by calling the Decrypt API then using the returned plaintext data key to finally encrypt the data. Which is the MOST suitable KMS API that the system should use to securely implement the requirements described above?
+ 
+The **GenerateDataKeyWithoutPlaintext** API generates a unique data key. This operation returns a data key that is encrypted under a customer master key (CMK) that you specify. GenerateDataKeyWithoutPlaintext is identical to GenerateDataKey except that it returns only the encrypted copy of the data key.
+
+Like GenerateDataKey, GenerateDataKeyWithoutPlaintext returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.
+
+ This operation is useful for systems that need to encrypt data at some point, but not immediately. When you need to encrypt the data, you call the Decrypt operation on the encrypted copy of the key.
+
+It's also useful in distributed systems with different levels of trust. For example, you might store encrypted data in containers. One component of your system creates new containers and stores an encrypted data key with each container. Then, a different component puts the data into the containers. That component first decrypts the data key, uses the plaintext data key to encrypt data, puts the encrypted data into the container, and then destroys the plaintext data key. In this system, the component that creates the containers never sees the plaintext data key.
+
+Hence, the correct answer in this scenario is to use the GenerateDataKeyWithoutPlaintext API.
+
+GenerateDataKey is incorrect because this operation also returns a plaintext copy of the data key along with the copy of the encrypted data key under a customer master key (CMK) that you specified. Take note that the scenario explicitly mentioned that the API must return only the encrypted copy of the data key which will be used later for encryption. Although this API can be used in this scenario, it is not recommended since the actual encryption process of the data happens at a later time and not in real-time.
+ 
+ 
+### A Software Engineer is developing an application which will be hosted on an EC2 instance and will read messages from a standard SQS queue. The average time that it takes for the producers to send a new message to the queue is 40 seconds. Which of the following is the MOST efficient way for the application to query the new messages from the queue?
+ 
+**Amazon SQS long polling** is a way to retrieve messages from your Amazon SQS queues. While the regular short polling returns immediately, even if the message queue being polled is empty, long polling doesn’t return a response until a message arrives in the message queue, or the long poll times out.
+
+Long polling helps reduce the cost of using Amazon SQS by eliminating the number of empty responses (when there are no messages available for a ReceiveMessage request) and false empty responses (when messages are available but aren't included in a response). This type of polling is suitable if the new messages that are being added to the SQS queue arrive less frequently.
+ 
+You can configure long polling to your SQS queue by simply setting the "Receive Message Wait Time" field to a value greater than 0. Hence, the correct answer for this scenario is to configure the SQS queue to use Long Polling.
+
+The option that says: "Configure each message in the SQS queue to have a custom visibility timeout of 40 seconds" is incorrect because a visibility timeout is primarily used to prevent other consumers from processing the message again for a period of time. This is normally used if your application takes a long time to process and delete a message from the SQS queue.
+
+The option that says: "Configure the SQS queue to use Short Polling" is incorrect because it is inefficient to poll the queue every second if the average time that it takes for the producers to send a new message to the queue is 40 seconds. It is better to do Long Polling, which will query the queue every 15 or 20 seconds considering that new messages are not being added every second.
+
+The option that says: "Configure an SQS Delay Queue with a value of 40 seconds" is incorrect because this is primarily configured if you want to postpone the delivery of new messages to the SQS queue for a number of seconds. Having this SQS configuration which sets the new messages to remain invisible to the consumers for a duration of the delay period is not helpful in the given scenario. It is still better to use Long Polling instead of setting up a delay queue.
+ 
+ 
+### You have several API Gateway APIs with Lambda Integration for each release life cycle of your application. There is a requirement to consolidate multiple releases into a single API Gateway for the ALPHA, BETA, RC (Release Candidate), and PROD releases. For example, their clients can connect to their ALPHA release by using the alpha.tutorialsdojo.com endpoint and beta release through the beta.tutorialsdojo.com endpoint. As the AWS developer, how can you satisfy this requirement?
+ 
+**Stage variables** are name-value pairs that you can define as configuration attributes associated with a deployment stage of a REST API. They act like environment variables and can be used in your API setup and mapping templates.
+ 
+For example, you can define a stage variable in a stage configuration, and then set its value as the URL string of an HTTP integration for a method in your REST API. Later, you can reference the URL string using the associated stage variable name from the API setup. This way, you can use the same API setup with a different endpoint at each stage by resetting the stage variable value to the corresponding URLs. You can also access stage variables in the mapping templates, or pass configuration parameters to your AWS Lambda or HTTP backend.
+
+### A web application is running in an ECS Cluster and updates data in DynamoDB several times a day. The clients retrieve data directly from the DynamoDB through APIs exposed by Amazon API Gateway. Although API caching is enabled, there are specific clients that want to retrieve the latest data from DynamoDB for every API request sent. What should be done to only allow authorized clients to invalidate an API Gateway cache entry when submitting API requests? (Select TWO.)
+ 
+A client of your API can invalidate an existing cache entry and reload it from the integration endpoint for individual requests. The client must send a request that contains the **Cache-Control: max-age=0 header**. The client receives the response directly from the integration endpoint instead of the cache, provided that the client is authorized to do so. This replaces the existing cache entry with the new response, which is fetched from the integration endpoint.
+
+Ticking the **Require authorization** checkbox ensures that not every client can invalidate the API cache. If most or all of the clients invalidate the API cache, this could significantly increase the latency of your API.
+
+Hence, to only allow authorized clients to invalidate an API Gateway cache entry when submitting API requests, you can just tick the Require Authorization checkbox in the Cache Settings of your API via the console and instruct the client to send a request which contains the Cache-Control: max-age=0 header. 
+
+### A technical manager needs permission to create new repositories and delete them in CodeCommit. This will enable her to manage all of the code repositories of each development teams and remove duplicate or unused ones. Which of the following permissions should be given in order to comply with the standard security advice of granting least privilege?
+ 
+Access to AWS CodeCommit requires credentials. Those credentials must have permissions to access AWS resources, such as CodeCommit repositories, and your IAM user, which you use to manage your Git credentials or the SSH public key that you use for making Git connections.
+
+In CodeCommit, the primary resource is a repository. Each resource has a unique Amazon Resource Names (ARN) associated with it. In a policy, you use an Amazon Resource Name (ARN) to identify the resource that the policy applies to. To manage access to AWS resources, you attach permissions policies to IAM identities. You use identity-based policies to control access to repositories.
+
+The codecommit:CreateRepository and codecommit:DeleteRepository permissions enable you to create and delete a CodeCommit repository respectively. Hence, these two permissions are the correct permissions that should be given to the technical manager. 
+ 
+### Your customers require access to the REST APIs of your web application which is hosted on EC2 instances behind a load balancer in your VPC. To accommodate this request, your web services should be integrated with API Gateway that has a custom data mapping. You need to specify how the incoming request data is mapped to the integration request and how the resulting integration response data is mapped to the method response. Which of the following integration types is the MOST suitable one to use in API Gateway to meet this requirement?
+ 
+ You can integrate an API method in your API Gateway with a custom HTTP endpoint of your application in two ways:
+
+ - HTTP proxy integration
+
+ - HTTP custom integration
+
+In your API Gateway console, you can define the type of HTTP integration of your resource by toggling the "Configure as proxy resource" checkbox.
+ 
+With proxy integration, the setup is simple. You only need to set the HTTP method and the HTTP endpoint URI, according to the backend requirements, if you are not concerned with content encoding or caching.
+
+With custom integration, setup is more involved. In addition to the proxy integration setup steps, you need to specify how the incoming request data is mapped to the integration request and how the resulting integration response data is mapped to the method response. API Gateway supports the following endpoint ports: 80, 443 and 1024-65535.
+
+Programmatically, you choose an integration type by setting the type property on the Integration resource. For the Lambda proxy integration, the value is AWS_PROXY. For the Lambda custom integration and all other AWS integrations, it is AWS. For the HTTP proxy integration and HTTP integration, the value is HTTP_PROXY and HTTP, respectively. For the mock integration, the type value is MOCK.
+
+Since the integration type that is being described in the scenario fits the definition of an HTTP custom integration, the correct answer in this scenario is to use the HTTP integration type.
+ 
+### A developer is building an e-commerce application which will be hosted in an ECS Cluster. To minimize the number of instances in use, she must select a strategy which will place tasks based on the least available amount of CPU or memory. Which of the following task placement strategy should the developer implement?
+ 
+ **A task placement strategy** is an algorithm for selecting instances for task placement or tasks for termination. Task placement strategies can be specified when either running a task or creating a new service.
+
+Amazon ECS supports the following task placement strategies:
+
+**binpack** - Place tasks based on the least available amount of CPU or memory. This minimizes the number of instances in use.
+
+**random** - Place tasks randomly.
+
+**spread** - Place tasks evenly based on the specified value. Accepted values are attribute key-value pairs, instanceId, or host. 
+
+The scenario states that the developer must select a task placement strategy which will place tasks based on the least available amount of CPU or memory. **By using bin pack strategy with CPU as the field parameter, ECS is able to place tasks onto an instance with the least available amount of CPU first, before moving on to the other instances**. Hence, the correct answer is to use the binpack task placement strategy.
+
+random is incorrect because this will place the tasks randomly, rather than placing the tasks to the instances based on the least available amount of CPU or memory.
+
+spread is incorrect because this will place tasks evenly to the instances based on a specified value.
+
+distinctInstance is incorrect because this is not a valid task placement strategy, but a task placement constraint. This is primarily used as a constraint to place each task on a different container instance. It can be specified when either running a task or creating a new service. 
+
+### A developer configured an Amazon API Gateway proxy integration named MyAPI to work with a Lambda function. However, when the API is being called, the developer receives a 502 Bad Gateway error. She tried invoking the underlying function but it properly returns the result in XML format. What is the MOST likely root cause of this issue?
+ 
+Amazon API Gateway Lambda proxy integration is a simple, powerful, and nimble mechanism to build an API with a setup of a single API method. The Lambda proxy integration allows the client to call a single Lambda function in the backend. The function accesses many resources or features of other AWS services, including calling other Lambda functions.
+
+In Lambda proxy integration, when a client submits an API request, API Gateway passes the raw request as-is to the integrated Lambda function, except that the order of the request parameters is not preserved. This request data includes the request headers, query string parameters, URL path variables, payload, and API configuration data. The configuration data can include current deployment stage name, stage variables, user identity, or authorization context (if any). The backend Lambda function parses the incoming request data to determine the response that it returns.
+
+For API Gateway to pass the Lambda output as the API response to the client, the Lambda function must return the result in the following JSON format:
+ 
+ ![Screen Shot 2021-09-16 at 12 58 59 PM](https://user-images.githubusercontent.com/44325167/133600518-adc10d1a-ffbd-45b2-9eaf-591d22cf2b30.png)
+ 
+ Since the Lambda function returns the result in XML format, it will cause the 502 errors in the API Gateway. Hence, the correct answer is that **there is an incompatible output returned from a Lambda proxy integration backend**.
+ 
+### A website hosted in AWS has a custom CloudWatch metric to track all HTTP server errors in the site every minute, which occurs intermittently. An existing CloudWatch Alarm has already been configured for this metric but you would like to re-configure this to properly monitor the application. The alarm should only be triggered when all three data points in the most recent three consecutive periods are above the threshold. Which of the following options is the MOST appropriate way to monitor the website based on the given threshold?
+
+When you create an alarm, you specify three settings to enable CloudWatch to evaluate when to change the alarm state:
+
+- Period is the length of time to evaluate the metric or expression to create each individual data point for an alarm. It is expressed in seconds. If you choose one minute as the period, there is one datapoint every minute.
+
+- Evaluation Period is the number of the most recent periods, or data points, to evaluate when determining alarm state.
+
+- Datapoints to Alarm is the number of data points within the evaluation period that must be breaching to cause the alarm to go to the ALARM state. The breaching data points do not have to be consecutive, they just must all be within the last number of data points equal to Evaluation Period.
+
+In the following figure, the alarm threshold is set to three units. The alarm is configured to go to the ALARM state and both Evaluation Period and Datapoints to Alarm are 3. That is, when all three datapoints in the most recent three consecutive periods are above the threshold, the alarm goes to the ALARM state. In the figure, this happens in the third through fifth time periods. At period six, the value dips below the threshold, so one of the periods being evaluated is not breaching, and the alarm state changes to OK. During the ninth time period, the threshold is breached again, but for only one period. Consequently, the alarm state remains OK. Hence, the option that says: "Set both the Evaluation Period and Datapoints to Alarm to 3" is the correct answer.
+ 
+ ![image](https://user-images.githubusercontent.com/44325167/133602142-5c933d91-7eb0-4685-ac93-3dedc317778d.png)
+
+### A new IT policy requires you to trace all calls that your Node.js application sends to external HTTP web APIs as well as SQL database queries. You have to instrument your application, which is hosted in Elastic Beanstalk, in order to properly trace the calls via the X-Ray console. What should you do to comply with the given requirement?
+ 
+ You can use the AWS Elastic Beanstalk console or a configuration file to run the AWS X-Ray daemon on the instances in your environment. X-Ray is an AWS service that gathers data about the requests that your application serves, and uses it to construct a service map that you can use to identify issues with your application and opportunities for optimization.
+
+![image](https://user-images.githubusercontent.com/44325167/133602709-dae5fc40-2e00-43d9-965d-10278bb2d26e.png)
+ 
+ To relay trace data from your application to AWS X-Ray, you can run the X-Ray daemon on your Elastic Beanstalk environment's Amazon EC2 instances. Elastic Beanstalk platforms provide a configuration option that you can set to run the daemon automatically. You can enable the daemon in a configuration file in your source code or by choosing an option in the Elastic Beanstalk console. When you enable the configuration option, the daemon is installed on the instance and runs as a service.
+
+Hence, the correct answer is to: enable the X-Ray daemon by including the xray-daemon.config configuration file in the .ebextensions directory of your source code, just as shown above.
+ 
+### A developer is building a web application which requires a multithreaded event-based key/value cache store that will cache result sets from database calls. You need to run large nodes with multiple cores for your cache layer and it should scale up or down as the demand on your system increases and decreases. Which of the following is the MOST suitable service that you should use?
+ 
+ 
+ **Redis and Memcached are popular, open-source, in-memory data stores**. Although they are both easy to use and offer high performance, there are important differences to consider when choosing an engine. 
+ 
+ **Memcached is designed for simplicity while Redis offers a rich set of features that make it effective for a wide range of use cases**.
+
+In this scenario, Redis can provide a much more durable and powerful cache layer to the prototype distributed system, however, **you should take note of one keyword in the requirement: multithreaded**. In terms of commands execution, Redis is mostly a single-threaded server. It is not designed to benefit from multiple CPU cores unlike Memcached, however, you can launch several Redis instances to scale out on several cores if needed.
+
+Memcached is a more suitable choice since the scenario specifies that the system will run large nodes with multiple cores or threads which Memcached can adequately provide. 
+
+You can choose Memcached over Redis if you have the following requirements:
+
+- You need the simplest model possible.
+
+- You need to run large nodes with multiple cores or threads.
+
+- You need the ability to scale out and in, adding and removing nodes as demand on your system increases and decreases.
+
+- You need to cache objects, such as a database.
+ 
+**This is why the most suitable answer to this scenario is Amazon ElastiCache for Memcached**.
+
+Amazon ElastiCache for Redis is incorrect because it does not totally support a multithreaded architecture, unlike Memcached. Although Redis has more features compared with Memcached, the scenario requires that the cache layer is multithreaded. This is why Memcached is a more suitable cache engine to choose from instead of Redis.
+Memcached is a more suitable choice since the scenario specifies that the system will run large nodes with multiple cores or threads which Memcached can adequately provide. 
+ 
+ ### A Lambda function is sending data to an Aurora MySQL DB Instance in your VPC. However,  you are getting a MySQL: ERROR 1040: Too many connections error whenever there is a surge in incoming traffic. Upon investigation, you found that your function is always creating a new database connection whenever it is invoked. Which of the following is the MOST suitable and scalable solution to overcome this problem?
+
+ When AWS Lambda executes your Lambda function, it provisions and manages the resources needed to run your Lambda function. When you create a Lambda function, you specify configuration information, such as the amount of memory and maximum execution time that you want to allow for your Lambda function. When a Lambda function is invoked, AWS Lambda launches an execution context based on the configuration settings you provide. The execution context is a temporary runtime environment that initializes any external dependencies of your Lambda function code, such as database connections or HTTP endpoints. This affords subsequent invocations better performance because there is no need to "cold-start" or initialize those external dependencies, as explained below.
+
+It takes time to set up an execution context and do the necessary "bootstrapping", which adds some latency each time the Lambda function is invoked. You typically see this latency when a Lambda function is invoked for the first time or after it has been updated because AWS Lambda tries to reuse the execution context for subsequent invocations of the Lambda function.
+
+After a Lambda function is executed, AWS Lambda maintains the execution context for some time in anticipation of another Lambda function invocation. In effect, the service freezes the execution context after a Lambda function completes, and thaws the context for reuse, if AWS Lambda chooses to reuse the context when the Lambda function is invoked again. This execution context reuse approach has the following implications:
+
+-Any declarations in your Lambda function code (outside the handler code, see Programming Model) remains initialized, providing additional optimization when the function is invoked again. For example, if your Lambda function establishes a database connection, instead of reestablishing the connection, the original connection is used in subsequent invocations. It is recommended to add logic in your code to check if a connection exists before creating one.
+
+### A developer is working on an application which stores data to an Amazon DynamoDB table with the DynamoDB Streams feature enabled. He set up an event source mapping with DynamoDB Streams and AWS Lambda function to monitor any table changes then store the original data of the overwritten item in S3. When an item is updated, it should only send a copy of the item's previous value to an S3 bucket and maintain the new value in the DynamoDB table. Which StreamViewType is the MOST suitable one to use in the DynamoDB configuration to fulfill this scenario?
+ 
+**DynamoDB Streams provides a time-ordered sequence of item level changes in any DynamoDB table**. The changes are de-duplicated and stored for 24 hours. Applications can access this log and view the data items as they appeared before and after they were modified, in near real time.
+ 
+Amazon DynamoDB is also integrated with AWS Lambda so that you can create triggers—pieces of code that automatically respond to events in DynamoDB Streams. With triggers, you can build applications that react to data modifications in DynamoDB tables.
+
+When an item in the table is modified, StreamViewType determines what information are written to the stream for this table. Valid values for StreamViewType are KEYS_ONLY, NEW_IMAGE, OLD_IMAGE, and NEW_AND_OLD_IMAGES.
+
+For the OLD_IMAGE type, the entire item which has the previous value as it appeared before it was modified is written to the stream. Hence, this is the correct answer in this scenario.
+ 
+KEYS_ONLY is incorrect because it will only write the key attributes of the modified item to the stream. This choice is wrong since the question states that values should be copied as well.
+
+NEW_IMAGE is incorrect because it will configure the stream to write the entire item with its new value as it appears after it was modified. This choice is wrong since the stream should capture the item's pre-modified values.
+
+NEW_AND_OLD_IMAGES is incorrect because although it writes the new values of the item in the stream, it also includes the old one as well. Since this type will send both the new and the old item images of the item to the stream, this option is wrong. Remember that it should only send a copy of the item's previous value to the S3 bucket, and not the new value in the DynamoDB table. The most suitable one to use here is the OLD_IMAGE type.
+
+### A developer is instructed to configure a worker daemon to queue messages based on a specific schedule using a worker environment hosted in Elastic Beanstalk. Periodic tasks should be defined to automatically add jobs to your worker environment's queue at a regular interval. Which configuration file should the developer add in the source bundle to meet the above requirement?
+ 
+AWS resources created for a worker environment tier include an Auto Scaling group, one or more Amazon EC2 instances, and an IAM role. For the worker environment tier, Elastic Beanstalk also creates and provisions an Amazon SQS queue if you don’t already have one. When you launch a worker environment tier, Elastic Beanstalk installs the necessary support files for your programming language of choice and a daemon on each EC2 instance in the Auto Scaling group.
+
+The daemon is responsible for pulling requests from an Amazon SQS queue and then sending the data to the web application running in the worker environment tier that will process those messages. If you have multiple instances in your worker environment tier, each instance has its own daemon, but they all read from the same Amazon SQS queue.
+ 
+You can define periodic tasks in a file named cron.yaml in your source bundle to add jobs to your worker environment's queue automatically at a regular interval. For example, you can configure and upload a cron.yaml file which creates two periodic tasks: one that runs every 12 hours and a second that runs at 11pm UTC every day.
+
+Hence, using the cron.yaml is the correct configuration file to be used in this scenario.
+ 
+### There has been reports that your application, which has a MySQL RDS database, becomes unresponsive from time to time. You were instructed to collect all SQL statements that took longer to execute for troubleshooting. What should you do to properly troubleshoot this issue with the LEAST amount of effort?
+ 
+You can monitor the MySQL error log, slow query log, and the general log. The MySQL error log is generated by default; you can generate the slow query and general logs by setting parameters in your DB parameter group. Amazon RDS rotates all of the MySQL log files; the intervals for each type are given following.
+
+You can monitor the MySQL logs directly through the Amazon RDS console, Amazon RDS API, AWS CLI, or AWS SDKs. You can also access MySQL logs by directing the logs to a database table in the main database and querying that table. You can use the mysqlbinlog utility to download a binary log.
+
+Hence, enabling the slow query log in RDS is the correct answer.
+
+Instrumenting your application using the X-Ray SDK is incorrect because although this can help you troubleshoot your application, this entails a lot of effort to implement. Remember that the question specifically asks for the solution with the least amount of effort.
+
+Enabling active tracing using AWS X-Ray is incorrect because this feature is only available in Lambda, but not in RDS.
+
+
+
+
+
+
+
