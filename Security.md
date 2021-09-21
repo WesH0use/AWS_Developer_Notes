@@ -1073,5 +1073,290 @@ Multipart upload allows you to upload a single object as a set of parts. Each pa
 
 Hence, using the Multipart Upload API is the correct answer in this scenario.
 
+### A Software Engineer is refactoring a Lambda function, which currently uses a public GraphQL API from the Internet as part of its processing. The new requirement states that the function should process the data and store the results to a database hosted in your VPC. The additional VPC-specific information has already been configured in the function and the database connection has been successfully established. However, after testing, he found that the function can't connect to the Internet anymore. Which of the following should the Software Engineer do to fix this issue? (Select TWO.)
+
+ AWS Lambda uses the VPC information you provide to set up ENIs that allow your Lambda function to access VPC resources. Each ENI is assigned a private IP address from the IP address range within the subnets you specify but is not assigned any public IP addresses.
+
+![image](https://user-images.githubusercontent.com/44325167/134155643-5a865799-9854-448a-8918-75165e57c38b.png)
+ 
+ Therefore, if your Lambda function requires Internet access (for example, to access AWS services that don't have VPC endpoints ), you can configure a NAT instance inside your VPC or you can use the Amazon VPC NAT gateway. You cannot use an Internet gateway attached to your VPC, since that requires the ENI to have public IP addresses. 
+
+If your Lambda function needs Internet access, just as described in this scenario, do not attach it to a public subnet or to a private subnet without Internet access. Instead, attach it only to private subnets with Internet access through a NAT instance or add a NAT gateway to your VPC. You should also ensure that the associated security group of the Lambda function allows outbound connections. 
+ 
+### A web application is using an ElastiCache cluster that is suffering from cache churn, which means that a lot of cache data in the cluster are never read. There is a requirement to reconfigure the application to retrieve the data from the database only in the event that there is a cache miss. Which of the following caching strategy is the MOST suitable that the developer should implement?
+ 
+Amazon ElastiCache is an in-memory key/value store that sits between your application and the data store (database) that it accesses. Whenever your application requests data, it first makes the request to the ElastiCache cache.
+
+**Lazy Loading,** as its name implies, is a caching strategy that loads data into the cache only when necessary. Here is how it works:
+ 
+ ![image](https://user-images.githubusercontent.com/44325167/134156063-fc26ec85-a4e9-403f-9cc5-8fd379c7c56c.png)
+ 
+- If the data exists in the cache and is current, ElastiCache returns the data to your application. This event is also called "Cache Hit".
+
+- If there is a "Cache Miss", or in other words, the data does not exist in the cache, or the data in the cache has expired, then your application requests the data from your data store which returns the data to your application. Your application then writes the data received from the store to the cache so it can be more quickly retrieved next time it is requested.
+ 
+Since the Lazy Loading strategy satisfies the requirement described in the scenario, this option is correct.
+ 
+### A Lambda function has been integrated with DynamoDB Streams as its event source. There has been a new version of the function that needs to be deployed using CodeDeploy where the traffic must be shifted in two increments. It should shift 10 percent of the incoming traffic to the new version in the first increment and then the remaining 90 percent should be deployed five minutes later. Which of the following deployment configurations is the MOST suitable to satisfy this requirement?
+ 
+**CodeDeploy** is a deployment service that automates application deployments to Amazon EC2 instances, on-premises instances, serverless Lambda functions, or Amazon ECS services. CodeDeploy can deploy application content that runs on a server and is stored in Amazon S3 buckets, GitHub repositories, or Bitbucket repositories. CodeDeploy can also deploy a serverless Lambda function. You do not need to make changes to your existing code before you can use CodeDeploy.
+
+When you deploy to an AWS Lambda compute platform, the deployment configuration specifies the way traffic is shifted to the new Lambda function versions in your application.
+ 
+In a **Canary** deployment configuration, the traffic is shifted in two increments. You can choose from predefined canary options that specify the percentage of traffic shifted to your updated Lambda function version in the first increment and the interval, in minutes, before the remaining traffic is shifted in the second increment. Hence, this is the correct answer which will satisfy the requirement for the given scenario.
+ 
+### You want to update a Lambda function on your production environment and ensure that when you publish the updated version, you still have a quick way to roll back to the older version in case you encountered a problem. To prevent any sudden user interruptions, you want to gradually increase the traffic going to the new version. Which of the following implementation is the BEST option to use? 
+ 
+By default, an alias points to a single Lambda function version. When the alias is updated to point to a different function version, incoming request traffic in turn instantly points to the updated version. This exposes that alias to any potential instabilities introduced by the new version. To minimize this impact, you can implement the routing-config parameter of the Lambda alias that allows you to point to two different versions of the Lambda function and dictate what percentage of incoming traffic is sent to each version.
+
+For example, you can specify that only 2 percent of incoming traffic is routed to the new version while you analyze its readiness for a production environment, while the remaining 98 percent is routed to the original version. As the new version matures, you can gradually update the ratio as necessary until you have determined that the new version is stable. You can then update the alias to route all traffic to the new version.
+
+You can point an alias to a maximum of two Lambda function versions. In addition:
+
+- Both versions must have the same IAM execution role.
+
+- Both versions must have the same AWS Lambda Function Dead Letter Queues configuration, or no DLQ configuration.
+
+- When pointing an alias to more than one version, the alias cannot point to $LATEST.
+
+Hence, using **Traffic Shifting** for Lambda Aliases is the correct answer. 
+ 
+ 
+ ### A reporting application is hosted in Elastic Beanstalk and uses DynamoDB as its database. If a user requests for data, it scans the entire table and returns the requested data. In the coming weeks, it is expected that the table will grow due to the surge of new users and requested reports. Which of the following should be done as a preparation to improve the performance of the application with minimal cost? (Select TWO.)
+
+In general, Scan operations are less efficient than other operations in DynamoDB. A Scan operation always scans the entire table or secondary index. It then filters out values to provide the result you want, essentially adding the extra step of removing data from the result set.
+
+If possible, you should avoid using a Scan operation on a large table or index with a filter that removes many results. Also, as a table or index grows, the Scan operation slows. The Scan operation examines every item for the requested values and can use up the provisioned throughput for a large table or index in a single operation. For faster response times, design your tables and indexes so that your applications can use **Query** instead of Scan. For tables, you can also consider using the GetItem and BatchGetItem APIs.
+ 
+Alternatively, you can refactor your application to use Scan operations in a way that minimizes the impact on your request rate.  Instead of using a large Scan operation, you can use the following techniques to minimize the impact of a scan on a table's provisioned throughput.
+
+**Reduce page size** - Because a Scan operation reads an entire page (by default, 1 MB), you can reduce the impact of the scan operation by setting a smaller page size. The Scan operation provides a Limit parameter that you can use to set the page size for your request. Each Query or Scan request that has a smaller page size uses fewer read operations and creates a "pause" between each request. For example, suppose that each item is 4 KB and you set the page size to 40 items. A Query request would then consume only 20 eventually consistent read operations or 40 strongly consistent read operations. A larger number of smaller Query or Scan operations would allow your other critical requests to succeed without throttling.
+ 
+ **Isolate scan operations** - DynamoDB is designed for easy scalability. As a result, an application can create tables for distinct purposes, possibly even duplicating content across several tables. You want to perform scans on a table that is not taking "mission-critical" traffic. Some applications handle this load by rotating traffic hourly between two tables—one for critical traffic, and one for bookkeeping. Other applications can do this by performing every write on two tables: a "mission-critical" table, and a "shadow" table.
+ 
+Hence, **using Query operations instead of Scan and reducing the page size** are the correct answers.
+ 
+### An application hosted in an Amazon ECS Cluster processes a large stream of data and stores the result to a DynamoDB table. There is an urgent requirement to detect new entries in the table then automatically trigger a Lambda function to run some tests to verify the processed data. Which of the following options can satisfy the requirement with minimal configuration?
+ 
+Amazon DynamoDB is integrated with AWS Lambda so that you can create triggers—pieces of code that automatically respond to events in **DynamoDB Streams**. With triggers, you can build applications that react to data modifications in DynamoDB tables.
+
+If you enable DynamoDB Streams on a table, you can associate the stream ARN with a Lambda function that you write. Immediately after an item in the table is modified, a new record appears in the table's stream. AWS Lambda polls the stream and invokes your Lambda function synchronously when it detects new stream records.
+ 
+![image](https://user-images.githubusercontent.com/44325167/134159954-a325dbd2-7705-49c9-ac09-dd4af53ec02e.png)
+ 
+You can create a Lambda function which can perform a specific action that you specify, such as sending a notification or initiating a workflow. For instance, you can set up a Lambda function to simply copy each stream record to persistent storage, such as EFS or S3, to create a permanent audit trail of write activity in your table.
+
+Suppose you have a mobile gaming app that writes to a TutorialsDojoCourses table. Whenever the TopCourse attribute of the TutorialsDojoScores table is updated, a corresponding stream record is written to the table's stream. This event could then trigger a Lambda function that posts a congratulatory message on a social media network. (The function would simply ignore any stream records that are not updates to TutorialsDojoCourses or that do not modify the TopCourse attribute.)
+
+Hence, the correct answer is to enable DynamoDB Streams to detect the new entries and automatically trigger the Lambda function.  In this way, the requirement can be met with minimal configuration change as DynamoDB streams can be used as an event source to automatically trigger Lambda functions whenever there is a new entry.
+
+(Setting up a CloudWatch Alarm to automatically trigger the Lambda function whenever a new entry is created in the DynamoDB table is incorrect because CloudWatch Alarms only monitor service metrics, not changes in DynamoDB table data.)
+ 
+ 
+### An application, which already uses X-Ray, generates thousands of trace data every hour. The developer wants to use a filter expression which will limit the results based on custom attributes or keys that he specifies. How should the developer refactor the application in order to filter the results in the X-Ray console?
+ 
+Even with sampling, a complex application generates a lot of data. The AWS X-Ray console provides an easy-to-navigate view of the service graph. It shows health and performance information that helps you identify issues and opportunities for optimization in your application. For advanced tracing, you can drill down to traces for individual requests, or use filter expressions to find traces related to specific paths or users.
+
+When you instrument your application, the X-Ray SDK records information about incoming and outgoing requests, the AWS resources used, and the application itself. You can add other information to the segment document as annotations and metadata.
+
+Annotations are simple key-value pairs that are indexed for use with filter expressions. Use annotations to record data that you want to use to group traces in the console, or when calling the GetTraceSummaries API. X-Ray indexes up to 50 annotations per trace.
+
+Metadata are key-value pairs with values of any type, including objects and lists, but that are not indexed. Use metadata to record data you want to store in the trace but don't need to use for searching traces. You can view annotations and metadata in the segment or subsegment details in the X-Ray console.
+
+Hence, **adding the custom attributes as annotations in your segment document** is the correct answer.
+
+ 
+### A recently deployed Lambda function has an intermittent issue in processing customer data. You enabled the active tracing option in order to detect, analyze, and optimize performance issues of your function using the X-Ray service. Which of the following environment variables are used by AWS Lambda to facilitate communication with X-Ray? (Select TWO.)
+
+AWS X-Ray is an AWS service that allows you to detect, analyze, and optimize performance issues with your AWS Lambda applications. X-Ray collects metadata from the Lambda service and any upstream or downstream services that make up your application. X-Ray uses this metadata to generate a detailed service graph that illustrates performance bottlenecks, latency spikes, and other issues that impact the performance of your Lambda application.
+
+AWS Lambda uses environment variables to facilitate communication with the X-Ray daemon and configure the X-Ray SDK.
+
+_X_AMZN_TRACE_ID: Contains the tracing header, which includes the sampling decision, trace ID, and parent segment ID. If Lambda receives a tracing header when your function is invoked, that header will be used to populate the _X_AMZN_TRACE_ID environment variable. If a tracing header was not received, Lambda will generate one for you.
+
+AWS_XRAY_CONTEXT_MISSING: The X-Ray SDK uses this variable to determine its behavior in the event that your function tries to record X-Ray data, but a tracing header is not available. Lambda sets this value to LOG_ERROR by default.
+ 
+AWS_XRAY_DAEMON_ADDRESS: This environment variable exposes the X-Ray daemon's address in the following format: IP_ADDRESS:PORT. You can use the X-Ray daemon's address to send trace data to the X-Ray daemon directly, without using the X-Ray SDK.
+
+Therefore, the correct answers for this scenario are the _X_AMZN_TRACE_ID and AWS_XRAY_CONTEXT_MISSING environment variables.
 
 
+### A mobile game is using a DynamoDB table named GameScore that keeps track of users and scores. Each item in the table is identified by a partition key (UserId) and a sort key (GameTitle). The diagram below shows how the items in the table are organized:
+
+![image](https://user-images.githubusercontent.com/44325167/134162562-f7726542-b106-4d0f-b8fc-ea6559e354ca.png)
+
+ 
+### A developer wants to write a leaderboard application to display the top scores for each game. How can the developer meet the requirement in the MOST efficient manner?
+ 
+Amazon DynamoDB provides fast access to items in a table by specifying primary key values. However, many applications might benefit from having one or more secondary (or alternate) keys available, to allow efficient access to data with attributes other than the primary key. To address this, you can create one or more secondary indexes on a table, and issue Query or Scan requests against these indexes.
+
+A secondary index is a data structure that contains a subset of attributes from a table, along with an alternate key to support Query operations. You can retrieve data from the index using a Query, in much the same way as you use Query with a table. A table can have multiple secondary indexes, which gives your applications access to many different query patterns.
+
+DynamoDB supports two types of secondary indexes:
+
+Global secondary index — an index with a partition key and a sort key that can be different from those on the base table. A global secondary index is considered "global" because queries on the index can span all of the data in the base table, across all partitions.
+
+Local secondary index — an index that has the same partition key as the base table, but a different sort key. A local secondary index is "local" in the sense that every partition of a local secondary index is scoped to a base table partition that has the same partition key value.
+
+To speed up queries on non-key attributes, you can create a global secondary index. A global secondary index contains a selection of attributes from the base table, but they are organized by a primary key that is different from that of the table. The index key does not need to have any of the key attributes from the table; it doesn't even need to have the same key schema as a table.
+
+In this scenario, you could create a global secondary index named GameTitleIndex, with a partition key of GameTitle and a sort key of TopScore. Since the base table's primary key attributes are always projected into an index, the UserId attribute is also present. The following diagram shows what GameTitleIndex index would look like:
+ 
+ ![image](https://user-images.githubusercontent.com/44325167/134164057-83905ff6-695a-48f0-b0b1-201f01f20499.png)
+
+Hence, the correct answer in this scenario is to: **Create a global secondary index. Assign the GameTitle attribute as the partition key and the TopScore attribute as the sort key**.
+ 
+(Create a local secondary index. Assign the GameTitle attribute as the partition key and the TopScore attribute as the sort key is incorrect because you can't add this index to an already existing table. Additionally, a local secondary index has the same partition key as the base table, but has a different sort key. It is "local" in the sense that every partition of a local secondary index is scoped to a base table partition that has the same partition key value.)
+
+
+### You developed a shell script which uses AWS CLI to create a new Lambda function. However, you received an InvalidParameterValueException after running the script. What is the MOST likely cause of this issue?
+ 
+ To create a Lambda function, you need a deployment package and an execution role. The deployment package contains your function code. The execution role grants the function permission to use AWS services, such as Amazon CloudWatch Logs for log streaming and AWS X-Ray for request tracing. You can use the CreateFunction API via the AWS CLI or the AWS SDK of your choice.
+
+A function has an unpublished version, and can have published versions and aliases. The unpublished version changes when you update your function's code and configuration. A published version is a snapshot of your function code and configuration that can't be changed. An alias is a named resource that maps to a version, and can be changed to map to a different version. 
+
+The InvalidParameterValueException will be returned if one of the parameters in the request is invalid. For example, if you provided an IAM role in the CreateFunction API which AWS Lambda is unable to assume. Hence, this option is the most likely cause of the issue in this scenario.
+ 
+### The users of a social media website must be authenticated using social identity providers such as Twitter, Facebook, and Google. Users can login to the site which will allow them to upload their selfies, memes, and other media files in an S3 bucket. As an additional feature, you should also enable guest user access to certain sections of the website. Which of the following should you do to accomplish this task?
+ 
+Amazon Cognito provides authentication, authorization, and user management for your web and mobile apps. Your users can sign in directly with a user name and password, or through a third party such as Facebook, Amazon, or Google.
+
+The two main components of Amazon Cognito are user pools and identity pools. User pools are user directories that provide sign-up and sign-in options for your app users. Identity pools enable you to grant your users access to other AWS services. You can use identity pools and user pools separately or together.
+ 
+![image](https://user-images.githubusercontent.com/44325167/134166146-55c81d0c-05e1-4a63-9a2f-7f317b813497.png)
+ 
+Amazon Cognito identity pools (federated identities) support user authentication through Amazon Cognito user pools, federated identity providers—including Amazon, Facebook, Google, and SAML identity providers—as well as unauthenticated identities. This feature also supports Developer Authenticated Identities (Identity Pools), which lets you register and authenticate users via your own back-end authentication process.
+
+Hence, creating an Identity Pool in Amazon Cognito and enabling access to unauthenticated identities is the most suitable answer for this scenario.
+ 
+ ### An API gateway with a Lambda proxy integration takes a long time to complete its processing. There were also occurrences where some requests timed out. You want to monitor the responsiveness of your API calls as well as the underlying Lambda function. Which of the following CloudWatch metrics should you use to troubleshoot this issue? (Select TWO.)
+
+You can monitor API execution using CloudWatch, which collects and processes raw data from API Gateway into readable, near real-time metrics. These statistics are recorded for a period of two weeks, so that you can access historical information and gain a better perspective on how your web application or service is performing. By default, API Gateway metric data is automatically sent to CloudWatch in one-minute periods. 
+
+The metrics reported by API Gateway provide information that you can analyze in different ways. The list below shows some common uses for the metrics. These are suggestions to get you started, not a comprehensive list.
+
+ - Monitor the IntegrationLatency metrics to measure the responsiveness of the backend.
+
+ - Monitor the Latency metrics to measure the overall responsiveness of your API calls.
+
+ - Monitor the CacheHitCount and CacheMissCount metrics to optimize cache capacities to achieve a desired performance.
+
+Hence, the correct metrics that you have to use in this scenario are Latency and IntegrationLatency.
+ 
+ (Count is incorrect because this metric simply gets the total number of API requests in a given period.
+
+CacheMissCount is incorrect because this metric just gets the number of requests served from the backend in a given period when API caching is enabled. The Sum statistic represents this metric, namely, the total count of the cache misses in the given period.
+
+CacheHitCount is incorrect because this fetches the number of requests served from the API cache in a given period. The Sum statistic represents this metric, namely, the total count of the cache hits in the given period.)
+ 
+ ### An augmented reality mobile game has a serverless backend composed of Lambda, DynamoDB, and API Gateway. Due to the surge of new players globally, there were a lot of delays in retrieving the player data. You are instructed by your manager to improve the game's performance by reducing the database response times down to microseconds. Which of the following is the BEST service to use that can satisfy this scenario?
+ 
+**Amazon DynamoDB Accelerator (DAX**) is a fully managed, highly available, in-memory cache for DynamoDB that delivers up to a 10x performance improvement – from milliseconds to microseconds – even at millions of requests per second. DAX does all the heavy lifting required to add in-memory acceleration to your DynamoDB tables, without requiring developers to manage cache invalidation, data population, or cluster management.
+
+This will enable you to focus on building great applications for your customers without worrying about performance at scale. You do not need to modify application logic, since DAX is compatible with existing DynamoDB API calls. You can enable DAX with just a few clicks in the AWS Management Console or using the AWS SDK. Just as with DynamoDB, you only pay for the capacity you provision.
+ 
+ (ElastiCache is incorrect because even though you may use ElastiCache as your database cache, it will not reduce the DynamoDB response time to microseconds unlike DynamoDB DAX.)
+ 
+### A serverless application is composed of several Lambda functions which reads data from RDS. These functions must share the same connection string that should be encrypted to improve data security. Which of the following is the MOST secure way to meet the above requirement?
+ 
+AWS Systems Manager Parameter Store provides secure, hierarchical storage for configuration data management and secrets management. You can store data such as passwords, database strings, and license codes as parameter values. You can store values as plain text or encrypted data. You can then reference values by using the unique name that you specified when you created the parameter.
+
+Parameter Store offers the following benefits and features:
+
+- Use a secure, scalable, hosted secrets management service (No servers to manage).
+
+- Improve your security posture by separating your data from your code.
+
+- Store configuration data and secure strings in hierarchies and track versions.
+
+- Control and audit access at granular levels.
+
+- Configure change notifications and trigger automated actions.
+
+- Tag parameters individually, and then secure access from different levels, including operational, parameter, Amazon EC2 tag, or path levels.
+
+- Reference AWS Secrets Manager secrets by using Parameter Store parameters.
+
+Hence, **creating a Secure String Parameter using the AWS Systems Manager Parameter Store** is the correct solution for this scenario.
+ 
+### A Lambda-based application consists of several functions. Once triggered, these functions will call various downstream resources such as a DynamoDB table or an S3 bucket, or make other API calls. There is a requirement to allow the developers to trace the event source that invoked your Lambda functions and trace the downstream calls that your functions made. The number of requests and the execution duration per request should also be monitored. Which of the following services should you use to achieve this? (Select TWO.)
+ 
+A typical Lambda-based application consists of one or more functions triggered by events such as object uploads to Amazon S3, Amazon SNS notifications, and API actions. Once triggered, those functions usually call downstream resources such as DynamoDB tables or Amazon S3 buckets, or make other API calls. AWS Lambda leverages Amazon CloudWatch to automatically emit metrics and logs for all invocations of your function. However, this mechanism might not be convenient for tracing the event source that invoked your Lambda function, or for tracing downstream calls that your function made.
+ 
+AWS X-Ray is a service that collects data about requests that your application serves, and provides tools you can use to view, filter, and gain insights into that data to identify issues and opportunities for optimization. For any traced request to your application, you can see detailed information not only about the request and response, but also about calls that your application makes to downstream AWS resources, microservices, databases and HTTP web APIs.
+
+Hence, the correct answers are: **AWS X-Ray and Amazon CloudWatch**.
+
+### A programmer is developing a shell script which uses AWS CLI to list all objects of a given bucket. However, the script is timing out if the bucket has tens of thousands of objects. What is the BEST solution that the programmer should implement to rectify this issue?
+ 
+For commands that can return a large list of items, the AWS CLI provides options that you can use to control the number of items included in the output when the AWS CLI calls a service's API to populate the list.
+
+By default, the AWS CLI uses a page size of 1000 and retrieves all available items. If you see issues when running list commands on a large number of resources, the default page size of 1000 might be too high. This can cause calls to AWS services to exceed the maximum allowed time and generate a "timed out" error.
+ 
+You can use the --page-size option to specify that the AWS CLI request a smaller number of items from each call to the AWS service. The CLI still retrieves the full list but performs a larger number of service API calls in the background and retrieves a smaller number of items with each call. This gives the individual calls a better chance of succeeding without a timeout.
+
+Hence, the correct answer is to **add pagination parameters in the AWS CLI command which will avoid timeouts to the shell script**.
+ 
+ ### An application hosted in a multicontainer Docker platform in Elastic Beanstalk uses DynamoDB to handle the session data of its users. These data are only used in a particular timeframe and the stale data can be deleted after the user logged out of the system. Which of the following is the most suitable way to delete the session data?
+ 
+**Time To Live (TTL)** for DynamoDB allows you to define when items in a table expire so that they can be automatically deleted from the database.
+
+TTL is provided at no extra cost as a way to reduce storage usage and reduce the cost of storing irrelevant data without using provisioned throughput. With TTL enabled on a table, you can set a timestamp for deletion on a per-item basis, allowing you to limit storage usage to only those records that are relevant.
+ 
+TTL is useful if you have continuously accumulating data that loses relevance after a specific time period. For example: session data, event logs, usage patterns, and other temporary data. If you have sensitive data that must be retained only for a certain amount of time according to contractual or regulatory obligations, TTL helps you ensure that it is removed promptly and as scheduled.
+
+Therefore, the correct answer in this scenario is to **enable TTL for the session data in the DynamoDB table**.  
+ 
+### A Lambda function downloads a file, with a size of 55 MB, from an external repository every time it is invoked. This causes the function to time out intermittently which greatly affects your serverless application. How should you refactor the function to solve this issue?
+ 
+When AWS Lambda executes your Lambda function, it provisions and manages the resources needed to run your Lambda function. When you create a Lambda function, you specify configuration information, such as the amount of memory and maximum execution time that you want to allow for your Lambda function. When a Lambda function is invoked, AWS Lambda launches an execution context based on the configuration settings you provide. The execution context is a temporary runtime environment that initializes any external dependencies of your Lambda function code, such as database connections or HTTP endpoints. This affords subsequent invocations better performance because there is no need to "cold-start" or initialize those external dependencies, as explained below.
+
+It takes time to set up an execution context and do the necessary "bootstrapping", which adds some latency each time the Lambda function is invoked. You typically see this latency when a Lambda function is invoked for the first time or after it has been updated because AWS Lambda tries to reuse the execution context for subsequent invocations of the Lambda function.
+ 
+After a Lambda function is executed, AWS Lambda maintains the execution context for some time in anticipation of another Lambda function invocation. In effect, the service freezes the execution context after a Lambda function completes, and thaws the context for reuse, if AWS Lambda chooses to reuse the context when the Lambda function is invoked again.
+
+Each execution context provides 512 MB of additional disk space in the /tmp directory. The directory content remains when the execution context is frozen, providing transient cache that can be used for multiple invocations. You can add extra code to check if the cache has the data that you stored.
+
+Hence, the correct answer in this scenario is to **store the file in the /tmp directory of the execution context and reuse it on succeeding invocations**.
+
+### A developer has recently completed a new version of a serverless application that is ready to be deployed using AWS SAM. There is a requirement that the traffic should shift from the previous Lambda function to the new version in the shortest time possible, but you still don't want to shift traffic all-at-once immediately. Which deployment configuration is the MOST suitable one to use in this scenario?
+ 
+If you use AWS SAM to create your serverless application, it comes built-in with CodeDeploy to help ensure safe Lambda deployments. There are various deployment preference types that you can choose from.
+
+For example:
+
+If you choose Canary10Percent10Minutes then 10 percent of your customer traffic is immediately shifted to your new version. After 10 minutes, all traffic is shifted to the new version.
+
+However, if your pre-hook/post-hook tests fail, or if a CloudWatch alarm is triggered, CodeDeploy rolls back your deployment. The following table outlines other traffic-shifting options that are available:
+
+- Canary: Traffic is shifted in two increments. You can choose from predefined canary options. The options specify the percentage of traffic that's shifted to your updated Lambda function version in the first increment, and the interval, in minutes, before the remaining traffic is shifted in the second increment.
+
+- Linear: Traffic is shifted in equal increments with an equal number of minutes between each increment. You can choose from predefined linear options that specify the percentage of traffic that's shifted in each increment and the number of minutes between each increment.
+
+- All-at-once: All traffic is shifted from the original Lambda function to the updated Lambda function version at once.
+ 
+![image](https://user-images.githubusercontent.com/44325167/134170924-4cc4362a-923c-4dc4-bca0-0010fbc74e58.png)
+ 
+Hence, the CodeDeployDefault.LambdaCanary10Percent5Minutes option is correct because 10 percent of your customer traffic is immediately shifted to your new version. After 5 minutes, all traffic is shifted to the new version. This means that the entire deployment time will only take 5 minutes
+
+### An internal web application is hosted in a custom VPC with multiple private subnets only. Every EC2 instance that will be provisioned on this VPC will require access to an S3 bucket to pull configuration files as well as to push application logs. Which of the following options is the most suitable solution to use in this scenario?
+ 
+In this scenario, the key point that you have to understand is that S3 is not part of your VPC, unlike your EC2 instances, EBS volumes, ELBs, and other services that typically reside within your private network. An EC2 instance needs to have access to the Internet, via the Internet Gateway or a NAT Instance/Gateway in order to access S3. Alternatively, you can also create a VPC endpoint so your private subnet would be able to connect to S3.
+
+To visualize this, take a look at the diagram below:
+ 
+![image](https://user-images.githubusercontent.com/44325167/134172258-ae78b39b-3bf8-4bd4-b5cb-8a41caf6ecfe.png)
+ 
+Hence, creating a VPC endpoint for S3 is the correct answer.
+
+### A DynamoDB table has several top-level attributes such as id, course_id, course_title, price, rating and many others. The database queries of your application returns all of the item attributes by default but you only want to fetch specific attributes such as the course_id and price per request. As the developer, how can you refactor your application to accomplish this requirement?
+ 
+To read data from a table, you use operations such as GetItem, Query, or Scan. DynamoDB returns all of the item attributes by default. To get just some, rather than all of the attributes, use a **projection expression**.
+
+**A projection expression is a string that identifies the attributes you want. To retrieve a single attribute, specify its name. For multiple attributes, the names must be comma-separated.**
+
+The following AWS CLI example shows how to use a projection expression with a GetItemoperation. This projection expression retrieves a top-level scalar attribute (Description), the first element in a list (RelatedItems[0]), and a list nested within a map (ProductReviews.FiveStar).
+
+You can use any attribute name in a projection expression, provided that the first character is a-z or A-Z and the second character (if present) is a-z, A-Z, or 0-9. If an attribute name does not meet this requirement, you will need to define an expression attribute name as a placeholder.
+
+Therefore, using projection expression is the correct answer in this scenario.
